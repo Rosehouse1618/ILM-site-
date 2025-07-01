@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="There was an error submitting your application to iLm Halal Student Halls. Please try again or contact us directly for assistance.">
+  <meta name="robots" content="noindex, nofollow">
+  
+  <title>Application Error - iLm Halal Student Halls</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189944/web-app-manifest-512x512_fpuiis.png">
+  <link rel="shortcut icon" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png">
+  <style>
+    body {
+      background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      margin: 0;
+    }
+    .error-container {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+    .error-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #c53030;
+      font-size: 32px;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    .error-message {
+      background: #fed7d7;
+      border: 1px solid #feb2b2;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+      color: #c53030;
+      font-weight: 600;
+    }
+    .error-actions {
+      background: #f7fafc;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    .error-actions h3 {
+      color: #2d3748;
+      margin-bottom: 16px;
+    }
+    .error-actions p {
+      color: #4a5568;
+      margin-bottom: 16px;
+    }
+    .contact-info a {
+      color: #3182ce;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+    }
+    .btn-secondary {
+      background: white;
+      color: #4a5568;
+      border: 2px solid #e2e8f0;
+    }
+    @media (max-width: 768px) {
+      .error-container {
+        padding: 24px;
+        margin: 16px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <div class="error-icon">❌</div>
+    <h1>Submission Error</h1>
+    
+    <div class="error-message" id="errorMessageDisplay">
+      An error occurred while submitting your application.
+    </div>
+    
+    <div class="error-actions">
+      <h3>What can you do?</h3>
+      <p>Please try submitting your application again, or contact us directly if the problem persists.</p>
+      <div class="contact-info">
+        <p><strong>Email:</strong> <a href="mailto:RoseHouse.ilm@outlook.com">RoseHouse.ilm@outlook.com</a></p>
+        <p><strong>Phone:</strong> <a href="tel:07395202486">07395 202486</a></p>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+      <a href="/booking" class="btn btn-primary">← Try Again</a>
+      <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+  </div>
+  
+  <script>
+    // Get error message from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorMessage = urlParams.get('error') || 'An unknown error occurred while submitting your application.';
+    
+    // Display the error message
+    document.getElementById('errorMessageDisplay').textContent = decodeURIComponent(errorMessage);
+    
+    // Auto-redirect to home after 2 minutes
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 120000);
+  </script>
+</body>
+</html> 

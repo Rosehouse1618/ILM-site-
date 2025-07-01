@@ -1,0 +1,104 @@
+RewriteEngine On
+
+# Force HTTPS (if you have SSL certificate)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Cache busting for CSS and JS files
+RewriteRule ^(.*)\.css$ $1.css?v=20240115 [L]
+RewriteRule ^(.*)\.js$ $1.js?v=20240115 [L]
+
+# Remove trailing slash from URLs (optional)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{THE_REQUEST} /+[^?]+?/
+RewriteRule ^(.*)/ /$1 [R=301,L]
+
+# Remove .html extension from URLs
+RewriteCond %{THE_REQUEST} /+[^?]+\.html[\s?] [NC]
+RewriteRule ^(.*)\.html$ /$1 [R=301,L]
+
+# Add .html extension internally for requests without extension
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# Specific redirects for clean URLs
+RewriteRule ^home/?$ /index.html [L]
+RewriteRule ^booking/?$ /booking.html [L]
+RewriteRule ^success/?$ /booking-success.html [L]
+RewriteRule ^error/?$ /booking-error.html [L]
+RewriteRule ^admin/?$ /admin.html [L]
+RewriteRule ^about/?$ /index.html#about [R=301,L]
+RewriteRule ^gallery/?$ /index.html#gallery [R=301,L]
+RewriteRule ^amenities/?$ /index.html#amenities [R=301,L]
+RewriteRule ^location/?$ /index.html#location [R=301,L]
+RewriteRule ^faq/?$ /index.html#faq [R=301,L]
+RewriteRule ^contact/?$ /index.html#contact [R=301,L]
+RewriteRule ^policies/?$ /policies.html [L]
+RewriteRule ^sitemap/?$ /sitemap.html [L]
+
+# Handle root domain redirect
+RewriteRule ^$ /index.html [L]
+
+# Handle 404 errors gracefully
+ErrorDocument 404 /index.html
+
+# Cache optimization
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+</IfModule>
+
+# Cache Control Headers
+<IfModule mod_headers.c>
+    # Prevent caching of HTML files to ensure dynamic content updates
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+    
+    # Force revalidation of CSS and JS files
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "no-cache, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+    
+    # Add versioning header for cache busting
+    Header set X-Cache-Version "v2024-01-15"
+    
+    # Force browser to check for updates
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+</IfModule>
+
+# Compress files for better performance
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule> 

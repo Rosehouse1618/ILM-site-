@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Your accommodation application has been submitted successfully to iLm Halal Student Halls. Check your email for confirmation and next steps.">
+  <meta name="robots" content="noindex, nofollow">
+  
+  <title>Application Submitted Successfully - iLm Halal Student Halls</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189944/web-app-manifest-512x512_fpuiis.png">
+  <link rel="shortcut icon" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #4a5568;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .success-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 900px;
+      width: 100%;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+    }
+
+    .success-main {
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: left;
+    }
+
+    .success-main .success-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+      animation: confetti-pop 1s ease-out forwards;
+    }
+
+    @keyframes confetti-pop {
+      0% { transform: scale(0) rotate(90deg); opacity: 0; }
+      70% { transform: scale(1.1) rotate(0deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .success-main h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1a202c;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .success-main .subtitle {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .success-main .application-id {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 32px;
+    }
+
+    .home-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    
+    .home-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .success-sidebar {
+      background-color: #f7fafc;
+      padding: 48px;
+      border-left: 1px solid #e2e8f0;
+    }
+
+    .success-footer {
+      grid-column: 1 / -1;
+      background-color: white;
+      padding: 24px 48px;
+      text-align: left;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .sidebar-widget {
+      background-color: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    }
+    
+    .sidebar-widget:not(:last-child) {
+        margin-bottom: 24px;
+    }
+
+    .sidebar-widget h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .sidebar-widget ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar-widget li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #4a5568;
+    }
+    
+    .sidebar-widget li:not(:last-child) {
+        margin-bottom: 12px;
+    }
+
+    .sidebar-widget li::before {
+      content: '✓';
+      color: #38a169;
+      background-color: #c6f6d5;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .sidebar-widget .contact-text {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .sidebar-widget a {
+      color: #4299e1;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .sidebar-widget a:hover {
+        text-decoration: underline;
+    }
+    
+    @media (max-width: 900px) {
+        .success-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .success-sidebar {
+            border-left: none;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .success-footer {
+            padding: 24px 32px;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 600px) {
+        body {
+            padding: 0;
+            align-items: stretch;
+        }
+
+        .success-grid {
+            border-radius: 0;
+            max-width: 100%;
+            min-height: 100vh;
+        }
+
+        .success-main, .success-sidebar, .success-footer {
+            padding: 32px;
+        }
+
+        .success-main h1 {
+            font-size: 28px;
+        }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="success-grid">
+    <div class="success-main">
+      <div class="success-icon">🎉</div>
+      <h1>Application Submitted!</h1>
+      <p class="subtitle">
+        Your application has been received and is being processed. We're excited to help you find your perfect accommodation!
+      </p>
+      <div class="application-id" id="applicationIdDisplay">
+        Application ID: Loading...
+      </div>
+    </div>
+    <div class="success-sidebar">
+      <div class="sidebar-widget">
+        <h3>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"></path><path d="M3.34 19a10 10 0 1 1 17.32 0"></path></svg>
+          <span>What happens next?</span>
+        </h3>
+        <ul>
+          <li>You will receive a confirmation email shortly.</li>
+          <li>Our team will review your application within 48 hours.</li>
+          <li>We will contact you with updates on your application status.</li>
+          <li>If approved, we will send booking confirmation and payment instructions.</li>
+        </ul>
+      </div>
+      <div class="sidebar-widget">
+        <h3>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 8.4c.5.38.8.97.8 1.6v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7c0-.63.3-1.22.8-1.6l8-5.7a2 2 0 0 1 2.4 0l8 5.7Z"></path><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+          <span>Questions?</span>
+        </h3>
+        <p class="contact-text">
+          Need help or have questions about your application? We're here to assist. Contact us at <a href="mailto:RoseHouse.ilm@outlook.com">RoseHouse.ilm@outlook.com</a>
+        </p>
+      </div>
+    </div>
+    <div class="success-footer">
+      <a href="/" class="home-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Back to Home</span>
+      </a>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const displayElement = document.getElementById('applicationIdDisplay');
+      if (!displayElement) return;
+
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationId = urlParams.get('id');
+        
+        if (applicationId) {
+          displayElement.textContent = `Application ID: ${applicationId}`;
+        } else {
+          displayElement.textContent = 'Application ID: Not Found';
+        }
+      } catch (error) {
+        console.error('Error getting application ID:', error);
+        displayElement.textContent = 'Application ID: Error';
+      }
+    });
+  </script>
+
+</body>
+</html>

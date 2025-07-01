@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Administrative login area for iLm Halal Student Halls staff. Authorized access only.">
+  <meta name="robots" content="noindex, nofollow">
+  
+  <title>Admin Login - iLm Halal Student Halls</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png">
+  
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 20px auto;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .login-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .login-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .login-subtitle {
+      color: #7f8c8d;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f8f9fa;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      background: #f8f9fa;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .auth-tab.active {
+      background: #3498db;
+      color: white;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .auth-btn {
+      width: 100%;
+      padding: 12px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .auth-btn:hover {
+      background: #2980b9;
+    }
+
+    .auth-btn:disabled {
+      background: #bdc3c7;
+      cursor: not-allowed;
+    }
+
+    .error-message {
+      background: #ffebee;
+      color: #c62828;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .success-message {
+      background: #e8f5e8;
+      color: #2e7d32;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .info-message {
+      background: #e3f2fd;
+      color: #1976d2;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .back-link {
+      color: #7f8c8d;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: #3498db;
+    }
+
+    .forgot-password-link {
+      color: #3498db;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password-link:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+
+    .security-note {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #666;
+      text-align: left;
+    }
+
+    .admin-info {
+      background: #e8f5e8;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #2e7d32;
+      text-align: left;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-logo">
+        <img src="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189839/473148050_10160452160655951_3047339032063400229_n_gnkdpz.jpg" alt="iLm Halal Student Halls Logo">
+      </div>
+      
+      <h1 class="login-title">Admin Access</h1>
+      <p class="login-subtitle">Secure authentication for staff members</p>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <div id="errorMessage" class="error-message"></div>
+      <div id="successMessage" class="success-message"></div>
+      <div id="infoMessage" class="info-message"></div>
+
+      <!-- Login Form -->
+      <div id="loginForm">
+        <form id="signInForm">
+          <div class="form-group">
+            <label for="loginEmail">Admin Email</label>
+            <input type="email" id="loginEmail" name="email" required autocomplete="username">
+          </div>
+
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" name="password" required autocomplete="current-password">
+          </div>
+
+          <button type="submit" class="auth-btn" id="signInBtn">
+            Sign In
+          </button>
+          
+          <div style="text-align: center; margin-top: 15px;">
+            <a href="#" onclick="showForgotPassword()" class="forgot-password-link">Forgot Password?</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="signupForm" class="hidden">
+        <div class="admin-info">
+          <strong>Admin Registration</strong><br>
+          Only authorized email addresses can create admin accounts:<br>
+          • RoseHouse.ilm@outlook.com<br>
+          • ilmstudenthalls@gmail.com
+        </div>
+
+        <form id="signUpForm">
+          <div class="form-group">
+            <label for="signupEmail">Admin Email</label>
+            <input type="email" id="signupEmail" name="email" required autocomplete="username">
+          </div>
+
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" name="password" required autocomplete="new-password" minlength="6">
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password" minlength="6">
+          </div>
+
+          <button type="submit" class="auth-btn" id="signUpBtn">
+            Create Admin Account
+          </button>
+        </form>
+      </div>
+
+      <!-- Forgot Password Form -->
+      <div id="forgotPasswordForm" class="hidden">
+        <div class="admin-info">
+          <strong>Reset Password</strong><br>
+          Enter your authorized admin email address to receive a password reset link.
+        </div>
+
+        <form id="resetPasswordForm">
+          <div class="form-group">
+            <label for="resetEmail">Admin Email</label>
+            <input type="email" id="resetEmail" name="email" required autocomplete="username">
+          </div>
+
+          <button type="submit" class="auth-btn" id="resetBtn">
+            Send Reset Link
+          </button>
+          
+          <div style="text-align: center; margin-top: 15px;">
+            <a href="#" onclick="backToLogin()" class="forgot-password-link">← Back to Sign In</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Set New Password Form -->
+      <div id="setNewPasswordForm" class="hidden">
+        <div class="admin-info">
+          <strong>Set New Password</strong><br>
+          Enter your new password below to complete the reset process.
+        </div>
+
+        <form id="newPasswordForm">
+          <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" name="password" required autocomplete="new-password" minlength="6">
+          </div>
+
+          <div class="form-group">
+            <label for="confirmNewPassword">Confirm New Password</label>
+            <input type="password" id="confirmNewPassword" name="confirmPassword" required autocomplete="new-password" minlength="6">
+          </div>
+
+          <button type="submit" class="auth-btn" id="setPasswordBtn">
+            Set New Password
+          </button>
+          
+          <div style="text-align: center; margin-top: 15px;">
+            <a href="#" onclick="backToLogin()" class="forgot-password-link">← Back to Sign In</a>
+          </div>
+        </form>
+      </div>
+
+      <a href="index.html" class="back-link">← Back to Main Site</a>
+
+      <div class="security-note">
+        <strong>🔒 Security Notice:</strong>
+        <br>• This area is restricted to authorized staff only
+        <br>• All login attempts are logged and monitored
+        <br>• Use strong, unique passwords for your account
+        <br>• Report any suspicious activity immediately
+      </div>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="/" class="back-link">← Back to iLm Student Halls Website</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Supabase Configuration
+    const SUPABASE_URL = 'https://nrnbfevlbakvdeaswbbd.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybmJmZXZsYmFrdmRlYXN3YmJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTIzODgsImV4cCI6MjA2NDM4ODM4OH0.3V7rTYNwxSsKA0etRgNgxvUgoULmqvppVtmSY9Hzr3M';
+    
+    // Initialize Supabase client
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Authorized admin emails (lowercase for case-insensitive comparison)
+    const AUTHORIZED_EMAILS = [
+      'rosehouse.ilm@outlook.com',
+      'ilmstudenthalls@gmail.com'
+    ];
+
+    let currentTab = 'login';
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if already authenticated
+      checkAuthStatus();
+      
+      // Set up forms
+      document.getElementById('signInForm').addEventListener('submit', handleSignIn);
+      document.getElementById('signUpForm').addEventListener('submit', handleSignUp);
+      document.getElementById('resetPasswordForm').addEventListener('submit', handlePasswordReset);
+      document.getElementById('newPasswordForm').addEventListener('submit', handleSetNewPassword);
+      
+      // Check if user came from password reset link
+      checkPasswordResetToken();
+      
+      // Focus email field
+      document.getElementById('loginEmail').focus();
+    });
+
+    async function checkAuthStatus() {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user && isAuthorizedEmail(user.email)) {
+          console.log('✅ User already authenticated:', user.email);
+          showSuccess('Already signed in. Redirecting...');
+          setTimeout(() => {
+            window.location.href = 'admin-dashboard.html';
+          }, 1500);
+        }
+      } catch (error) {
+        console.log('No active session');
+      }
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      
+      // Update tab buttons
+      document.querySelectorAll('.auth-tab').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Show/hide forms
+      if (tab === 'login') {
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('signupForm').classList.add('hidden');
+        document.getElementById('forgotPasswordForm').classList.add('hidden');
+        document.getElementById('loginEmail').focus();
+      } else {
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('signupForm').classList.remove('hidden');
+        document.getElementById('forgotPasswordForm').classList.add('hidden');
+        document.getElementById('signupEmail').focus();
+      }
+      
+      // Clear messages
+      hideAllMessages();
+    }
+
+    function showForgotPassword() {
+      // Hide all forms
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('signupForm').classList.add('hidden');
+      document.getElementById('forgotPasswordForm').classList.remove('hidden');
+      
+      // Reset tab buttons
+      document.querySelectorAll('.auth-tab').forEach(btn => btn.classList.remove('active'));
+      
+      // Focus email field
+      document.getElementById('resetEmail').focus();
+      
+      // Clear messages
+      hideAllMessages();
+      
+      currentTab = 'forgot';
+    }
+
+    function backToLogin() {
+      currentTab = 'login';
+      
+      // Show login form
+      document.getElementById('loginForm').classList.remove('hidden');
+      document.getElementById('signupForm').classList.add('hidden');
+      document.getElementById('forgotPasswordForm').classList.add('hidden');
+      document.getElementById('setNewPasswordForm').classList.add('hidden');
+      
+      // Activate login tab
+      document.querySelectorAll('.auth-tab').forEach(btn => btn.classList.remove('active'));
+      document.querySelector('.auth-tab:first-child').classList.add('active');
+      
+      // Focus email field
+      document.getElementById('loginEmail').focus();
+      
+      // Clear messages
+      hideAllMessages();
+    }
+
+    async function checkPasswordResetToken() {
+      // Check URL for reset token parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const fragment = window.location.hash;
+      
+      // Supabase sends tokens in both query params and hash fragments
+      const accessToken = urlParams.get('access_token') || getTokenFromHash('access_token');
+      const refreshToken = urlParams.get('refresh_token') || getTokenFromHash('refresh_token');
+      const type = urlParams.get('type') || getTokenFromHash('type');
+      
+      console.log('🔍 Checking for reset token...', { accessToken: !!accessToken, type });
+      
+      if (accessToken && type === 'recovery') {
+        try {
+          console.log('🔑 Password reset token found, setting session...');
+          
+          // Set the session with the tokens from the email link
+          const { data, error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken
+          });
+          
+          if (error) throw error;
+          
+          if (data.user) {
+            console.log('✅ Reset session established for:', data.user.email);
+            
+            // Show the new password form
+            showSetNewPasswordForm();
+            
+            // Clean up the URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+          
+        } catch (error) {
+          console.error('❌ Error setting reset session:', error);
+          showError('Invalid or expired reset link. Please request a new password reset.');
+        }
+      }
+    }
+
+    function getTokenFromHash(tokenName) {
+      // Parse tokens from URL hash fragment
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      return params.get(tokenName);
+    }
+
+    function showSetNewPasswordForm() {
+      // Hide all other forms
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('signupForm').classList.add('hidden');
+      document.getElementById('forgotPasswordForm').classList.add('hidden');
+      document.getElementById('setNewPasswordForm').classList.remove('hidden');
+      
+      // Reset tab buttons
+      document.querySelectorAll('.auth-tab').forEach(btn => btn.classList.remove('active'));
+      
+      // Focus password field
+      document.getElementById('newPassword').focus();
+      
+      // Clear messages and show info
+      hideAllMessages();
+      showInfo('Please enter your new password to complete the reset process.');
+      
+      currentTab = 'reset';
+    }
+
+    async function handleSetNewPassword(e) {
+      e.preventDefault();
+      
+      const newPassword = document.getElementById('newPassword').value.trim();
+      const confirmPassword = document.getElementById('confirmNewPassword').value.trim();
+      
+      // Validate password match
+      if (newPassword !== confirmPassword) {
+        showError('Passwords do not match.');
+        return;
+      }
+      
+      // Validate password strength
+      if (newPassword.length < 6) {
+        showError('Password must be at least 6 characters long.');
+        return;
+      }
+      
+      // Show loading state
+      const setPasswordBtn = document.getElementById('setPasswordBtn');
+      const originalText = setPasswordBtn.textContent;
+      setPasswordBtn.textContent = 'Setting Password...';
+      setPasswordBtn.disabled = true;
+      
+      hideAllMessages();
+
+      try {
+        console.log('🔄 Setting new password...');
+        
+        // Update the user's password
+        const { data, error } = await supabase.auth.updateUser({
+          password: newPassword
+        });
+
+        if (error) throw error;
+        
+        if (data.user) {
+          console.log('✅ Password updated successfully for:', data.user.email);
+          showSuccess('Password updated successfully! You can now sign in with your new password.');
+          
+          // Clear password fields
+          document.getElementById('newPassword').value = '';
+          document.getElementById('confirmNewPassword').value = '';
+          
+          // Sign out the user to clear the recovery session
+          await supabase.auth.signOut();
+          
+          // Switch back to login after delay
+          setTimeout(() => {
+            backToLogin();
+            // Pre-fill the email if we know it
+            if (data.user.email) {
+              document.getElementById('loginEmail').value = data.user.email;
+            }
+            showInfo('Please sign in with your new password.');
+          }, 3000);
+        }
+        
+      } catch (error) {
+        console.error('❌ Password update error:', error);
+        showError(`Failed to update password: ${error.message}`);
+      }
+      
+      // Reset button
+      setPasswordBtn.textContent = originalText;
+      setPasswordBtn.disabled = false;
+    }
+
+    async function handleSignIn(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      
+      // Validate authorized email
+      if (!isAuthorizedEmail(email)) {
+        showError('This email address is not authorized for admin access.');
+        return;
+      }
+      
+      // Show loading state
+      const signInBtn = document.getElementById('signInBtn');
+      const originalText = signInBtn.textContent;
+      signInBtn.textContent = 'Signing In...';
+      signInBtn.disabled = true;
+      
+      hideAllMessages();
+
+      try {
+        console.log('🔐 Attempting sign in for:', email);
+        
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        if (data.user) {
+          console.log('✅ Sign in successful:', data.user.email);
+          showSuccess('Sign in successful! Redirecting to dashboard...');
+          
+          // Store auth status for dashboard
+          localStorage.setItem('admin_authenticated', 'true');
+          localStorage.setItem('admin_email', data.user.email);
+          
+          setTimeout(() => {
+            window.location.href = 'admin-dashboard.html';
+          }, 1500);
+        }
+        
+      } catch (error) {
+        console.error('❌ Sign in error:', error);
+        
+        if (error.message.includes('Invalid login credentials')) {
+          showError('Invalid email or password. Please check your credentials.');
+        } else if (error.message.includes('Email not confirmed')) {
+          showError('Please check your email and click the confirmation link before signing in.');
+        } else {
+          showError(`Sign in failed: ${error.message}`);
+        }
+      }
+      
+      // Reset button
+      signInBtn.textContent = originalText;
+      signInBtn.disabled = false;
+    }
+
+    async function handleSignUp(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      // Validate authorized email
+      if (!isAuthorizedEmail(email)) {
+        showError('This email address is not authorized for admin access. Only RoseHouse.ilm@outlook.com and ilmstudenthalls@gmail.com can create admin accounts.');
+        return;
+      }
+      
+      // Validate password match
+      if (password !== confirmPassword) {
+        showError('Passwords do not match.');
+        return;
+      }
+      
+      // Validate password strength
+      if (password.length < 6) {
+        showError('Password must be at least 6 characters long.');
+        return;
+      }
+      
+      // Show loading state
+      const signUpBtn = document.getElementById('signUpBtn');
+      const originalText = signUpBtn.textContent;
+      signUpBtn.textContent = 'Creating Account...';
+      signUpBtn.disabled = true;
+      
+      hideAllMessages();
+
+      try {
+        console.log('📝 Attempting sign up for:', email);
+        
+        const { data, error } = await supabase.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              role: 'admin',
+              authorized: true
+            }
+          }
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        if (data.user) {
+          if (data.user.email_confirmed_at) {
+            // Email was auto-confirmed
+            console.log('✅ Sign up successful (auto-confirmed):', data.user.email);
+            showSuccess('Admin account created successfully! Redirecting...');
+            
+            localStorage.setItem('admin_authenticated', 'true');
+            localStorage.setItem('admin_email', data.user.email);
+            
+            setTimeout(() => {
+              window.location.href = 'admin-dashboard.html';
+            }, 2000);
+          } else {
+            // Email confirmation required
+            console.log('📧 Sign up successful, confirmation required:', data.user.email);
+            showInfo(`Admin account created! Please check your email (${email}) and click the confirmation link to complete setup.`);
+            
+            // Switch to login tab after delay
+            setTimeout(() => {
+              switchTab('login');
+              document.getElementById('loginEmail').value = email;
+            }, 3000);
+          }
+        }
+        
+      } catch (error) {
+        console.error('❌ Sign up error:', error);
+        
+        if (error.message.includes('User already registered')) {
+          showError('An admin account with this email already exists. Please use the Sign In tab.');
+          setTimeout(() => {
+            switchTab('login');
+            document.getElementById('loginEmail').value = email;
+          }, 2000);
+        } else {
+          showError(`Account creation failed: ${error.message}`);
+        }
+      }
+      
+      // Reset button
+      signUpBtn.textContent = originalText;
+      signUpBtn.disabled = false;
+    }
+
+    async function handlePasswordReset(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('resetEmail').value.trim();
+      
+      // Validate authorized email
+      if (!isAuthorizedEmail(email)) {
+        showError('This email address is not authorized for admin access. Only authorized admin emails can reset passwords.');
+        return;
+      }
+      
+      // Show loading state
+      const resetBtn = document.getElementById('resetBtn');
+      const originalText = resetBtn.textContent;
+      resetBtn.textContent = 'Sending...';
+      resetBtn.disabled = true;
+      
+      hideAllMessages();
+
+      try {
+        console.log('🔑 Attempting password reset for:', email);
+        
+        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/admin.html`
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        console.log('✅ Password reset email sent successfully');
+        showSuccess(`Password reset link sent to ${email}. Please check your email and follow the instructions.`);
+        
+        // Clear the email field
+        document.getElementById('resetEmail').value = '';
+        
+        // Auto switch back to login after 5 seconds
+        setTimeout(() => {
+          backToLogin();
+          showInfo('You can sign in with your new password once you\'ve reset it.');
+        }, 5000);
+        
+      } catch (error) {
+        console.error('❌ Password reset error:', error);
+        
+        if (error.message.includes('User not found')) {
+          showError('No admin account found with this email address.');
+        } else {
+          showError(`Password reset failed: ${error.message}`);
+        }
+      }
+      
+      // Reset button
+      resetBtn.textContent = originalText;
+      resetBtn.disabled = false;
+    }
+
+    function isAuthorizedEmail(email) {
+      return AUTHORIZED_EMAILS.includes(email.toLowerCase());
+    }
+
+    function showError(message) {
+      hideAllMessages();
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+    }
+
+    function showSuccess(message) {
+      hideAllMessages();
+      const successDiv = document.getElementById('successMessage');
+      successDiv.textContent = message;
+      successDiv.style.display = 'block';
+    }
+
+    function showInfo(message) {
+      hideAllMessages();
+      const infoDiv = document.getElementById('infoMessage');
+      infoDiv.textContent = message;
+      infoDiv.style.display = 'block';
+    }
+
+    function hideAllMessages() {
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'none';
+      document.getElementById('infoMessage').style.display = 'none';
+    }
+
+    // Handle Enter key
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        if (currentTab === 'login' && !document.getElementById('signInBtn').disabled) {
+          document.getElementById('signInForm').dispatchEvent(new Event('submit'));
+        } else if (currentTab === 'signup' && !document.getElementById('signUpBtn').disabled) {
+          document.getElementById('signUpForm').dispatchEvent(new Event('submit'));
+        } else if (currentTab === 'forgot' && !document.getElementById('resetBtn').disabled) {
+          document.getElementById('resetPasswordForm').dispatchEvent(new Event('submit'));
+        } else if (currentTab === 'reset' && !document.getElementById('setPasswordBtn').disabled) {
+          document.getElementById('newPasswordForm').dispatchEvent(new Event('submit'));
+        }
+      }
+    });
+
+    // Security: Clear sensitive data on page unload
+    window.addEventListener('beforeunload', function() {
+      if (!localStorage.getItem('admin_authenticated')) {
+        document.getElementById('loginPassword').value = '';
+        document.getElementById('signupPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+        document.getElementById('resetEmail').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmNewPassword').value = '';
+      }
+    });
+  </script>
+</body>
+</html> 

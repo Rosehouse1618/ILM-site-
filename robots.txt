@@ -1,0 +1,83 @@
+# Robots.txt for iLm Halal Student Halls - Student Accommodation Dundee
+# Website: https://ilm-studenthalls.com
+# Contact: RoseHouse.ilm@outlook.com
+
+# Allow all search engines to crawl the entire site
+User-agent: *
+Allow: /
+
+# Specifically allow important pages for student accommodation
+Allow: /index.html
+Allow: /booking.html
+Allow: /policies.html
+Allow: /sitemap.html
+
+# Allow access to CSS and JavaScript files for proper rendering
+Allow: /styles.css
+Allow: /app.js
+
+# Allow access to images for better indexing
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.png
+Allow: /*.gif
+Allow: /*.webp
+Allow: /*.svg
+
+# Disallow any admin or private areas (if they exist)
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /backup/
+
+# Disallow any test or development files
+Disallow: /test/
+Disallow: /dev/
+Disallow: /*.tmp
+Disallow: /*.bak
+
+# Allow specific search engines with enhanced permissions
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+# Sitemap location for search engines
+Sitemap: https://ilm-studenthalls.com/sitemap.xml
+
+# Additional sitemap for comprehensive indexing
+Sitemap: https://ilm-studenthalls.com/sitemap.html
+
+# Host directive for preferred domain
+Host: https://ilm-studenthalls.com 
