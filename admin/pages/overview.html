@@ -1,2 +1,48 @@
-<h1>Overview</h1>
-<p>Welcome to the iLm Student Halls admin dashboard overview. Select an item from the sidebar to begin managing content.</p>
+<!-- Dashboard Header with Stats -->
+<div class="admin-header">
+  <div>
+    <h1 class="admin-title">Admin Dashboard</h1>
+    <p style="margin: 5px 0 0 0; opacity: 0.9;">Manage student accommodation applications</p>
+  </div>
+  <div class="admin-stats">
+    <div class="stat-card">
+      <span class="stat-number" id="totalApplications">0</span>
+      <span class="stat-label">Total Applications</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="newApplications">0</span>
+      <span class="stat-label">New Today</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="pendingApplications">0</span>
+      <span class="stat-label">Pending Review</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="approvedApplications">0</span>
+      <span class="stat-label">Approved</span>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions Side Panel -->
+<div class="quick-actions" style="margin-top: 30px;">
+  <h3 style="margin-top: 0;">Quick Actions</h3>
+  <button class="quick-action-btn" onclick="exportApplications()">
+    📊 Export All Data
+  </button>
+  <button class="quick-action-btn" onclick="showBulkActions()">
+    📋 Bulk Actions
+  </button>
+  <button class="quick-action-btn secondary" onclick="showSettings()">
+    ⚙️ Settings
+  </button>
+  <button class="quick-action-btn secondary" onclick="openBookingForm()">
+    📝 Manual Entry
+  </button>
+  <button class="quick-action-btn" onclick="openDepositReceiptModal()">
+    🧾 Generate Deposit Receipt
+  </button>
+  <button class="quick-action-btn secondary" onclick="openLogoUploadModal()">
+    🖼️ Update Company Logo
+  </button>
+</div>
