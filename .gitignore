@@ -1,0 +1,30 @@
+# Netlify
+.netlify/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Node modules
+node_modules/
+
+# Build files
+dist/
+build/
+
+# Development files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+production-analytics-setup.js
+setup-supabase-analytics.md 

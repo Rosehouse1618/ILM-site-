@@ -2938,23 +2938,104 @@ class ILMWebsite {
   }
 
   sendToAdminDashboard(type, data) {
-    // Send anonymized analytics to admin dashboard
-    // This would typically go to your backend analytics service
-    if (this.analyticsEndpoint) {
-      fetch(this.analyticsEndpoint, {
+    // Send anonymized analytics to backend service
+    const analyticsEndpoint = this.getAnalyticsEndpoint();
+    
+    if (!analyticsEndpoint) {
+      console.log('Analytics endpoint not configured, storing locally only');
+      return;
+    }
+
+    const payload = {
+      type,
+      data: this.anonymizeData(data),
+      timestamp: Date.now(),
+      site_id: this.getSiteId(),
+      version: '2.0'
+    };
+
+    // Send to backend with retry logic
+    this.sendWithRetry(analyticsEndpoint, payload)
+      .then(() => {
+        console.log(`✅ Analytics ${type} sent to backend`);
+      })
+      .catch(error => {
+        console.log(`❌ Analytics upload failed, storing for retry:`, error.message);
+        this.queueForRetry(payload);
+      });
+  }
+
+  async sendWithRetry(endpoint, payload, maxRetries = 3) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybmJmZXZsYmFrdmRlYXN3YmJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTIzODgsImV4cCI6MjA2NDM4ODM4OH0.3V7rTYNwxSsKA0etRgNgxvUgoULmqvppVtmSY9Hzr3M`,
+            'X-Analytics-Token': this.getAnalyticsToken(),
+            'X-Site-Version': this.getAppVersion(),
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ybmJmZXZsYmFrdmRlYXN3YmJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4MTIzODgsImV4cCI6MjA2NDM4ODM4OH0.3V7rTYNwxSsKA0etRgNgxvUgoULmqvppVtmSY9Hzr3M'
         },
-        body: JSON.stringify({
-          type,
-          data: this.anonymizeData(data),
-          timestamp: Date.now()
-        })
-      }).catch(error => {
-        console.log('Analytics upload deferred:', error.message);
-      });
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.log(`Analytics attempt ${attempt}/${maxRetries} failed:`, error.message);
+        
+        if (attempt === maxRetries) {
+          throw error;
+        }
+        
+        // Exponential backoff
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+      }
     }
+  }
+
+  getAnalyticsEndpoint() {
+    // Configuration for analytics endpoint
+    return window.ANALYTICS_CONFIG?.endpoint || 
+           process.env.ANALYTICS_ENDPOINT || 
+           'https://your-backend.com/api/analytics';
+  }
+
+  getAnalyticsToken() {
+    return window.ANALYTICS_CONFIG?.token || 
+           process.env.ANALYTICS_TOKEN || 
+           'your-analytics-token';
+  }
+
+  getSiteId() {
+    return window.ANALYTICS_CONFIG?.siteId || 
+           process.env.SITE_ID || 
+           'ilm-student-halls';
+  }
+
+  getAppVersion() {
+    return window.APP_VERSION || '1.0.0';
+  }
+
+  queueForRetry(payload) {
+    // Queue failed analytics for retry
+    const retryQueue = JSON.parse(localStorage.getItem('analytics_retry_queue') || '[]');
+    retryQueue.push({
+      ...payload,
+      retryTimestamp: Date.now(),
+      attempts: 0
+    });
+    
+    // Keep only last 50 failed items
+    if (retryQueue.length > 50) {
+      retryQueue.splice(0, retryQueue.length - 50);
+    }
+    
+    localStorage.setItem('analytics_retry_queue', JSON.stringify(retryQueue));
   }
 
   anonymizePage(url) {

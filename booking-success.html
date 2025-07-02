@@ -160,7 +160,7 @@
     }
     
     .sidebar-widget li:not(:last-child) {
-        margin-bottom: 12px;
+      margin-bottom: 12px;
     }
 
     .sidebar-widget li::before {
@@ -201,12 +201,12 @@
         .success-sidebar {
             border-left: none;
             border-top: 1px solid #e2e8f0;
-        }
+    }
 
         .success-footer {
             padding: 24px 32px;
             text-align: center;
-        }
+    }
     }
 
     @media (max-width: 600px) {
@@ -219,15 +219,15 @@
             border-radius: 0;
             max-width: 100%;
             min-height: 100vh;
-        }
+      }
 
         .success-main, .success-sidebar, .success-footer {
             padding: 32px;
-        }
+      }
 
         .success-main h1 {
             font-size: 28px;
-        }
+      }
     }
 
   </style>
@@ -235,13 +235,13 @@
 <body>
   <div class="success-grid">
     <div class="success-main">
-      <div class="success-icon">🎉</div>
+    <div class="success-icon">🎉</div>
       <h1>Application Submitted!</h1>
       <p class="subtitle">
         Your application has been received and is being processed. We're excited to help you find your perfect accommodation!
-      </p>
-      <div class="application-id" id="applicationIdDisplay">
-        Application ID: Loading...
+    </p>
+    <div class="application-id" id="applicationIdDisplay">
+      Application ID: Loading...
       </div>
     </div>
     <div class="success-sidebar">
@@ -250,12 +250,12 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"></path><path d="M3.34 19a10 10 0 1 1 17.32 0"></path></svg>
           <span>What happens next?</span>
         </h3>
-        <ul>
+      <ul>
           <li>You will receive a confirmation email shortly.</li>
           <li>Our team will review your application within 48 hours.</li>
           <li>We will contact you with updates on your application status.</li>
           <li>If approved, we will send booking confirmation and payment instructions.</li>
-        </ul>
+      </ul>
       </div>
       <div class="sidebar-widget">
         <h3>
@@ -281,20 +281,20 @@
       if (!displayElement) return;
 
       try {
-        const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
         const applicationId = urlParams.get('id');
-        
+    
         if (applicationId) {
           displayElement.textContent = `Application ID: ${applicationId}`;
         } else {
           displayElement.textContent = 'Application ID: Not Found';
         }
-      } catch (error) {
+    } catch (error) {
         console.error('Error getting application ID:', error);
         displayElement.textContent = 'Application ID: Error';
-      }
+    }
     });
   </script>
 
 </body>
-</html>
+</html> 
