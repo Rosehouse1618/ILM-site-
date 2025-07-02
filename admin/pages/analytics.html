@@ -1,2 +1,62 @@
 <h1>Analytics</h1>
 <p>View site and booking analytics here. (Feature coming soon)</p>
+
+<!-- BEGIN Analytics Panel -->
+<div class="analytics-panel">
+  <h3 style="margin-top: 0;">Site Analytics (Privacy-Compliant)</h3>
+  <div class="analytics-tabs">
+    <button class="analytics-tab active" onclick="showAnalyticsTab('overview')">Overview</button>
+    <button class="analytics-tab" onclick="showAnalyticsTab('performance')">Performance</button>
+    <button class="analytics-tab" onclick="showAnalyticsTab('user-journey')">User Journey</button>
+    <button class="analytics-tab" onclick="showAnalyticsTab('accessibility')">Accessibility</button>
+  </div>
+
+  <div class="analytics-content">
+    <!-- Overview Tab -->
+    <div id="analytics-overview" class="analytics-tab-content active">
+      <div class="analytics-cards">
+        <div class="analytics-card">
+          <div class="card-icon">👥</div>
+          <div class="card-number" id="totalVisitors">0</div>
+          <div class="card-label">Total Visitors</div>
+        </div>
+        <div class="analytics-card">
+          <div class="card-icon">📄</div>
+          <div class="card-number" id="pageViews">0</div>
+          <div class="card-label">Page Views</div>
+        </div>
+        <div class="analytics-card">
+          <div class="card-icon">📝</div>
+          <div class="card-number" id="formSubmissions">0</div>
+          <div class="card-label">Form Submissions</div>
+        </div>
+        <div class="analytics-card">
+          <div class="card-icon">⏱️</div>
+          <div class="card-number" id="avgSession">0s</div>
+          <div class="card-label">Avg Session</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Performance Tab -->
+    <div id="analytics-performance" class="analytics-tab-content">
+      <p>Performance metrics will appear here...</p>
+    </div>
+
+    <!-- User Journey Tab -->
+    <div id="analytics-user-journey" class="analytics-tab-content">
+      <p>User journey data will appear here...</p>
+    </div>
+
+    <!-- Accessibility Tab -->
+    <div id="analytics-accessibility" class="analytics-tab-content">
+      <p>Accessibility insights will appear here...</p>
+    </div>
+  </div>
+
+  <div class="analytics-footer">
+    <small>📊 All analytics are anonymized and privacy-compliant. Data is only collected with user consent.</small>
+    <button class="btn btn-secondary" onclick="exportAnalytics()">📄 Export Analytics Report</button>
+  </div>
+</div>
+<!-- END Analytics Panel -->

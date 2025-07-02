@@ -1,2 +1,80 @@
 <h1>Users</h1>
 <p>Manage admin or student users here. (Feature coming soon)</p>
+
+<!-- BEGIN Student Management Section -->
+<div id="studentsSection" class="section-content">
+  <!-- Main Panel -->
+  <div class="main-panel">
+    <!-- Panel Header -->
+    <div class="panel-header">
+      <h2 class="panel-title">Student Management</h2>
+      <button class="btn btn-primary" onclick="refreshStudents()">
+        🔄 Refresh
+      </button>
+    </div>
+
+    <!-- Student Registration Form -->
+    <div class="student-registration-section">
+      <h3>Register New Student</h3>
+      <form id="studentRegistrationForm" class="student-registration-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="studentName">Full Name</label>
+            <input type="text" id="studentName" name="name" required 
+                   placeholder="Enter student's full name">
+          </div>
+          <div class="form-group">
+            <label for="studentEmail">Student Email</label>
+            <input type="email" id="studentEmail" name="email" required 
+                   placeholder="Enter student's email address">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="studentRoom">🏠 Room Number</label>
+            <select id="studentRoom" name="roomNumber" required>
+              <option value="">Select Room Number</option>
+              <!-- Room options will be populated by JavaScript -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tempPassword">Temporary Password</label>
+            <input type="password" id="tempPassword" name="password" required 
+                   placeholder="Set temporary password (min 6 characters)">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="registerStudentBtn" class="btn btn-primary">
+            👤 Register Student
+          </button>
+          <button type="button" onclick="generateRandomPassword()" class="btn btn-outline">
+            🎲 Generate Random Password
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Students List -->
+    <div class="students-list-section">
+      <h3>Registered Students <span id="studentCountBadge" class="count-badge" style="display: none;"></span></h3>
+      <div class="filter-controls" style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+        <input type="text" id="studentSearchInput" placeholder="🔍 Search students by name or email..." 
+               oninput="filterStudents()" 
+               style="flex: 1; min-width: 200px; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;">
+        <select id="roomFilter" onchange="filterStudents()" 
+                style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; min-width: 120px;">
+          <option value="">All Rooms</option>
+        </select>
+        <button type="button" onclick="clearStudentFilters()" class="btn btn-outline btn-small" 
+                style="padding: 8px 12px; white-space: nowrap;">
+          🔄 Clear Filters
+        </button>
+      </div>
+      <div id="studentsTableContainer">
+        <div class="loading-spinner"></div>
+        <p>Loading students...</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Student Management Section -->

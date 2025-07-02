@@ -93,3 +93,21 @@ function toggleSidebar() {
   if (!sidebar) return;
   sidebar.classList.toggle('open');
 }
+
+// Section initializers mapping
+const SECTION_INIT = {
+  overview: () => { if (typeof initializeDashboard === 'function') initializeDashboard(); },
+  bookings: () => { if (typeof initializeDashboard === 'function') initializeDashboard(); },
+  users: () => { if (typeof refreshStudents === 'function') refreshStudents(); },
+  gallery: () => { if (typeof initializeGallery === 'function') initializeGallery(); },
+  analytics: () => { if (typeof loadAnalyticsData === 'function') loadAnalyticsData(); }
+};
+
+// Run init when section loaded
+document.addEventListener('section:loaded', (e) => {
+  const section = e.detail.section;
+  if (SECTION_INIT[section]) {
+    // Delay slightly to ensure DOM inserted
+    setTimeout(() => SECTION_INIT[section](), 0);
+  }
+});
