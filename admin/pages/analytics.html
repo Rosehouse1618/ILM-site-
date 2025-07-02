@@ -1,0 +1,183 @@
+<!-- Privacy-Compliant Analytics -->
+<div class="analytics-panel">
+  <div class="panel-header">
+    <h2 class="panel-title">📊 Site Analytics (Privacy-Compliant)</h2>
+    <div class="header-actions">
+      <button class="btn btn-primary" onclick="refreshAnalytics()">
+        🔄 Refresh Data
+      </button>
+      <button class="btn btn-secondary" onclick="exportAnalytics()">
+        📄 Export Report
+      </button>
+    </div>
+  </div>
+  
+  <div class="analytics-tabs">
+    <button class="analytics-tab active" onclick="showAnalyticsTab('overview')">Overview</button>
+    <button class="analytics-tab" onclick="showAnalyticsTab('performance')">Performance</button>
+    <button class="analytics-tab" onclick="showAnalyticsTab('user-journey')">User Journey</button>
+    <button class="analytics-tab" onclick="showAnalyticsTab('accessibility')">Accessibility</button>
+  </div>
+  
+  <div class="analytics-content">
+    <!-- Overview Tab -->
+    <div id="analytics-overview" class="analytics-tab-content active">
+      <div class="analytics-cards">
+        <div class="analytics-card">
+          <div class="card-icon">👥</div>
+          <div class="card-number" id="activeVisitors">--</div>
+          <div class="card-label">Active Sessions (24h)</div>
+        </div>
+        <div class="analytics-card">
+          <div class="card-icon">📊</div>
+          <div class="card-number" id="avgPageTime">--</div>
+          <div class="card-label">Avg. Page Time</div>
+        </div>
+        <div class="analytics-card">
+          <div class="card-icon">🎯</div>
+          <div class="card-number" id="conversionRate">--</div>
+          <div class="card-label">Booking Conversion</div>
+        </div>
+        <div class="analytics-card">
+          <div class="card-icon">🔒</div>
+          <div class="card-number" id="privacyConsent">--</div>
+          <div class="card-label">Privacy Consent Rate</div>
+        </div>
+      </div>
+      
+      <div class="popular-features">
+        <h4>Most Used Features</h4>
+        <div class="feature-list" id="popularFeatures">
+          <div class="feature-item">
+            <span class="feature-name">Loading...</span>
+            <span class="feature-usage">--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Performance Tab -->
+    <div id="analytics-performance" class="analytics-tab-content">
+      <div class="performance-metrics">
+        <h4>Web Vitals</h4>
+        <div class="vitals-grid">
+          <div class="vital-card">
+            <div class="vital-label">First Paint</div>
+            <div class="vital-value" id="firstPaint">--ms</div>
+            <div class="vital-status" id="firstPaintStatus">Good</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">LCP</div>
+            <div class="vital-value" id="largestContentfulPaint">--ms</div>
+            <div class="vital-status" id="lcpStatus">Good</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">CLS</div>
+            <div class="vital-value" id="cumulativeLayoutShift">--</div>
+            <div class="vital-status" id="clsStatus">Good</div>
+          </div>
+        </div>
+        
+        <div class="performance-issues">
+          <h4>Performance Issues</h4>
+          <div class="issues-list" id="performanceIssues">
+            <div class="issue-item">
+              <span class="issue-type">No issues detected</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Journey Tab -->
+    <div id="analytics-user-journey" class="analytics-tab-content">
+      <div class="journey-flow">
+        <h4>User Journey Flow</h4>
+        <div class="journey-steps" id="journeySteps">
+          <div class="journey-step">
+            <div class="step-number">1</div>
+            <div class="step-name">Home Page</div>
+            <div class="step-percentage">100%</div>
+          </div>
+          <div class="journey-arrow">→</div>
+          <div class="journey-step">
+            <div class="step-number">2</div>
+            <div class="step-name">Gallery</div>
+            <div class="step-percentage">Loading...</div>
+          </div>
+          <div class="journey-arrow">→</div>
+          <div class="journey-step">
+            <div class="step-number">3</div>
+            <div class="step-name">Booking</div>
+            <div class="step-percentage">Loading...</div>
+          </div>
+        </div>
+        
+        <div class="goal-completion">
+          <h4>Goal Completion Rates</h4>
+          <div class="goals-list" id="goalsList">
+            <div class="goal-item">
+              <span class="goal-name">Gallery Viewed</span>
+              <div class="goal-bar">
+                <div class="goal-progress" style="width: 0%"></div>
+              </div>
+              <span class="goal-percentage">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accessibility Tab -->
+    <div id="analytics-accessibility" class="analytics-tab-content">
+      <div class="accessibility-insights">
+        <h4>Accessibility Usage</h4>
+        <div class="a11y-stats" id="accessibilityStats">
+          <div class="a11y-item">
+            <span class="a11y-icon">⌨️</span>
+            <span class="a11y-label">Keyboard Navigation</span>
+            <span class="a11y-percentage">--</span>
+          </div>
+          <div class="a11y-item">
+            <span class="a11y-icon">🔊</span>
+            <span class="a11y-label">Screen Reader Usage</span>
+            <span class="a11y-percentage">--</span>
+          </div>
+          <div class="a11y-item">
+            <span class="a11y-icon">🎨</span>
+            <span class="a11y-label">High Contrast</span>
+            <span class="a11y-percentage">--</span>
+          </div>
+          <div class="a11y-item">
+            <span class="a11y-icon">🎭</span>
+            <span class="a11y-label">Reduced Motion</span>
+            <span class="a11y-percentage">--</span>
+          </div>
+        </div>
+        
+        <div class="form-analytics">
+          <h4>Form Completion Analysis</h4>
+          <div class="form-stats" id="formStats">
+            <div class="form-stat">
+              <span class="stat-label">Average Completion Time</span>
+              <span class="stat-value">--</span>
+            </div>
+            <div class="form-stat">
+              <span class="stat-label">Abandonment Rate</span>
+              <span class="stat-value">--</span>
+            </div>
+            <div class="form-stat">
+              <span class="stat-label">Most Common Errors</span>
+              <span class="stat-value">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="analytics-footer">
+    <small>📊 All analytics are anonymized and privacy-compliant. Data is only collected with user consent.</small>
+    <button class="btn btn-secondary" onclick="exportAnalytics()">📄 Export Analytics Report</button>
+  </div>
+</div>

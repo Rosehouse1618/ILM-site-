@@ -1,0 +1,376 @@
+<!-- Bookings Management Section -->
+<div class="main-panel">
+  <!-- Panel Header -->
+  <div class="panel-header">
+    <h2 class="panel-title">📅 Booking Management</h2>
+    <div class="header-actions">
+      <button class="btn btn-primary" onclick="openBookingForm()">
+        📝 Manual Booking
+      </button>
+      <button class="btn btn-secondary" onclick="exportBookings()">
+        📊 Export Bookings
+      </button>
+      <button class="btn btn-primary" onclick="refreshBookings()">
+        🔄 Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Booking Statistics Cards -->
+  <div class="stats-cards-container">
+    <div class="stat-card-mini">
+      <div class="stat-icon">🏠</div>
+      <div class="stat-content">
+        <div class="stat-number" id="totalBookings">0</div>
+        <div class="stat-label">Total Bookings</div>
+      </div>
+    </div>
+    <div class="stat-card-mini">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <div class="stat-number" id="confirmedBookings">0</div>
+        <div class="stat-label">Confirmed</div>
+      </div>
+    </div>
+    <div class="stat-card-mini">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-content">
+        <div class="stat-number" id="pendingBookings">0</div>
+        <div class="stat-label">Pending</div>
+      </div>
+    </div>
+    <div class="stat-card-mini">
+      <div class="stat-icon">📊</div>
+      <div class="stat-content">
+        <div class="stat-number" id="occupancyRate">0%</div>
+        <div class="stat-label">Occupancy Rate</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter Bar -->
+  <div class="search-filter-bar">
+    <input type="text" class="search-box" placeholder="Search by name, email, or booking ID..." 
+           id="bookingSearchInput" onkeyup="filterBookings()">
+    <select class="filter-select" id="bookingStatusFilter" onchange="filterBookings()">
+      <option value="">All Statuses</option>
+      <option value="confirmed">Confirmed</option>
+      <option value="pending">Pending</option>
+      <option value="checked-in">Checked In</option>
+      <option value="checked-out">Checked Out</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+    <select class="filter-select" id="bookingRoomTypeFilter" onchange="filterBookings()">
+      <option value="">All Room Types</option>
+      <option value="single">Single Room</option>
+      <option value="shared">Shared Room</option>
+      <option value="studio">Studio Apartment</option>
+    </select>
+    <select class="filter-select" id="bookingUniversityFilter" onchange="filterBookings()">
+      <option value="">All Universities</option>
+      <option value="abertay">Abertay University</option>
+      <option value="dundee">University of Dundee</option>
+      <option value="al-makhtoum">Al Makhtoum Institute</option>
+      <option value="st-andrews">St Andrews University</option>
+      <option value="dundee-angus-college">Dundee & Angus College</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+
+  <!-- Quick Actions Bar -->
+  <div class="quick-actions-bar">
+    <button class="btn btn-success" onclick="openCheckInModal()">
+      🏠 Check In Student
+    </button>
+    <button class="btn btn-warning" onclick="openCheckOutModal()">
+      🚪 Check Out Student
+    </button>
+    <button class="btn btn-info" onclick="openRoomTransferModal()">
+      🔄 Room Transfer
+    </button>
+    <button class="btn btn-secondary" onclick="openDepositReceiptModal()">
+      🧾 Generate Receipt
+    </button>
+  </div>
+
+  <!-- Room Occupancy Overview -->
+  <div class="room-occupancy-section">
+    <h3>Room Occupancy Overview</h3>
+    <div class="room-grid" id="roomGrid">
+      <!-- Room occupancy grid will be populated here -->
+      <div class="loading">Loading room occupancy data...</div>
+    </div>
+  </div>
+
+  <!-- Bookings Table -->
+  <div style="overflow-x: auto;">
+    <table class="applications-table">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Student Details</th>
+          <th>Room Assignment</th>
+          <th>Check-in Date</th>
+          <th>Duration</th>
+          <th>Status</th>
+          <th>Payment Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="bookingsTableBody">
+        <tr>
+          <td colspan="8" class="loading">
+            Loading bookings...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" id="bookingsPagination">
+    <!-- Pagination buttons will be generated here -->
+  </div>
+</div>
+
+<!-- Side Panel -->
+<div class="side-panel">
+  <!-- Room Status Summary -->
+  <div class="quick-actions">
+    <h3 style="margin-top: 0;">Room Status</h3>
+    <div class="room-status-summary" id="roomStatusSummary">
+      <div class="status-item">
+        <div class="status-icon available">🟢</div>
+        <div class="status-details">
+          <div class="status-number" id="availableRooms">0</div>
+          <div class="status-label">Available</div>
+        </div>
+      </div>
+      <div class="status-item">
+        <div class="status-icon occupied">🔴</div>
+        <div class="status-details">
+          <div class="status-number" id="occupiedRooms">0</div>
+          <div class="status-label">Occupied</div>
+        </div>
+      </div>
+      <div class="status-item">
+        <div class="status-icon maintenance">🟡</div>
+        <div class="status-details">
+          <div class="status-number" id="maintenanceRooms">0</div>
+          <div class="status-label">Maintenance</div>
+        </div>
+      </div>
+      <div class="status-item">
+        <div class="status-icon reserved">🟠</div>
+        <div class="status-details">
+          <div class="status-number" id="reservedRooms">0</div>
+          <div class="status-label">Reserved</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Booking Activity -->
+  <div class="recent-activity">
+    <h3 style="margin-top: 0;">Recent Activity</h3>
+    <div id="recentBookingActivity">
+      <div class="activity-item">
+        <div class="activity-icon activity-new">🏠</div>
+        <div class="activity-text">John Smith checked in to Room 201</div>
+        <div class="activity-time">2h ago</div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon activity-update">🔄</div>
+        <div class="activity-text">Sarah Jones transferred to Room 105</div>
+        <div class="activity-time">4h ago</div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon activity-approve">✅</div>
+        <div class="activity-text">Mike Wilson's booking confirmed</div>
+        <div class="activity-time">6h ago</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming Events -->
+  <div class="upcoming-events">
+    <h3 style="margin-top: 0;">Upcoming Events</h3>
+    <div id="upcomingEvents">
+      <div class="event-item">
+        <div class="event-date">Today</div>
+        <div class="event-details">
+          <div class="event-title">2 Check-ins Expected</div>
+          <div class="event-description">Rooms 103, 207</div>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">Tomorrow</div>
+        <div class="event-details">
+          <div class="event-title">1 Check-out</div>
+          <div class="event-description">Room 205</div>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">This Week</div>
+        <div class="event-details">
+          <div class="event-title">3 Room Inspections</div>
+          <div class="event-description">Scheduled maintenance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Check-in Modal -->
+<div id="checkInModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Student Check-in</h3>
+      <button class="close-modal" onclick="closeCheckInModal()">&times;</button>
+    </div>
+    <div id="checkInBody">
+      <form id="checkInForm">
+        <div class="form-group">
+          <label for="checkInStudentSelect">Select Student</label>
+          <select id="checkInStudentSelect" name="studentId" required>
+            <option value="">Choose a student with confirmed booking...</option>
+            <!-- Options will be populated dynamically -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="checkInDate">Check-in Date</label>
+          <input type="date" id="checkInDate" name="checkInDate" required>
+        </div>
+        <div class="form-group">
+          <label for="checkInNotes">Check-in Notes (Optional)</label>
+          <textarea id="checkInNotes" name="notes" rows="3" placeholder="Any special notes or observations during check-in..."></textarea>
+        </div>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="keysProvided" name="keysProvided" required>
+            Keys provided to student
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="orientationCompleted" name="orientationCompleted">
+            Room orientation completed
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="depositReceived" name="depositReceived">
+            Security deposit received
+          </label>
+        </div>
+      </form>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeCheckInModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="processCheckIn()">Complete Check-in</button>
+    </div>
+  </div>
+</div>
+
+<!-- Check-out Modal -->
+<div id="checkOutModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Student Check-out</h3>
+      <button class="close-modal" onclick="closeCheckOutModal()">&times;</button>
+    </div>
+    <div id="checkOutBody">
+      <form id="checkOutForm">
+        <div class="form-group">
+          <label for="checkOutStudentSelect">Select Student</label>
+          <select id="checkOutStudentSelect" name="studentId" required>
+            <option value="">Choose a checked-in student...</option>
+            <!-- Options will be populated dynamically -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="checkOutDate">Check-out Date</label>
+          <input type="date" id="checkOutDate" name="checkOutDate" required>
+        </div>
+        <div class="form-group">
+          <label for="roomCondition">Room Condition</label>
+          <select id="roomCondition" name="roomCondition" required>
+            <option value="excellent">Excellent - No issues</option>
+            <option value="good">Good - Minor cleaning needed</option>
+            <option value="fair">Fair - Some maintenance required</option>
+            <option value="poor">Poor - Significant damage</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="checkOutNotes">Check-out Notes</label>
+          <textarea id="checkOutNotes" name="notes" rows="3" placeholder="Document any damages, missing items, or special conditions..."></textarea>
+        </div>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="keysReturned" name="keysReturned" required>
+            Keys returned by student
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="roomInspected" name="roomInspected" required>
+            Room inspection completed
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="depositReturned" name="depositReturned">
+            Security deposit returned
+          </label>
+        </div>
+      </form>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeCheckOutModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="processCheckOut()">Complete Check-out</button>
+    </div>
+  </div>
+</div>
+
+<!-- Room Transfer Modal -->
+<div id="roomTransferModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Room Transfer</h3>
+      <button class="close-modal" onclick="closeRoomTransferModal()">&times;</button>
+    </div>
+    <div id="roomTransferBody">
+      <form id="roomTransferForm">
+        <div class="form-group">
+          <label for="transferStudentSelect">Select Student</label>
+          <select id="transferStudentSelect" name="studentId" required>
+            <option value="">Choose a student to transfer...</option>
+            <!-- Options will be populated dynamically -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newRoomSelect">New Room</label>
+          <select id="newRoomSelect" name="newRoomId" required>
+            <option value="">Choose available room...</option>
+            <!-- Available rooms will be populated dynamically -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="transferDate">Transfer Date</label>
+          <input type="date" id="transferDate" name="transferDate" required>
+        </div>
+        <div class="form-group">
+          <label for="transferReason">Reason for Transfer</label>
+          <select id="transferReason" name="reason" required>
+            <option value="">Select reason...</option>
+            <option value="maintenance">Room maintenance required</option>
+            <option value="student-request">Student request</option>
+            <option value="roommate-conflict">Roommate conflict</option>
+            <option value="upgrade">Room upgrade</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="transferNotes">Transfer Notes</label>
+          <textarea id="transferNotes" name="notes" rows="3" placeholder="Additional details about the transfer..."></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeRoomTransferModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="processRoomTransfer()">Process Transfer</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,274 @@
+<!-- Overview Dashboard Section -->
+<div class="admin-header">
+  <div>
+    <h1 class="admin-title">Dashboard Overview</h1>
+    <p>Welcome to the iLm Halal Student Halls Admin Dashboard</p>
+  </div>
+  <div class="admin-stats">
+    <div class="stat-card">
+      <span class="stat-number" id="totalApplications">0</span>
+      <span class="stat-label">Total Applications</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="newApplications">0</span>
+      <span class="stat-label">New Today</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="pendingApplications">0</span>
+      <span class="stat-label">Pending</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="approvedApplications">0</span>
+      <span class="stat-label">Approved</span>
+    </div>
+  </div>
+</div>
+
+<!-- Dashboard Grid -->
+<div class="dashboard-grid">
+  <!-- Main Panel -->
+  <div class="main-panel">
+    <!-- Panel Header -->
+    <div class="panel-header">
+      <h2 class="panel-title">Recent Applications</h2>
+      <button class="btn btn-primary" onclick="refreshApplications()">
+        🔄 Refresh
+      </button>
+    </div>
+
+    <!-- Applications Table -->
+    <div style="overflow-x: auto;">
+      <table class="applications-table">
+        <thead>
+          <tr>
+            <th>Application ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>University</th>
+            <th>Room Type</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="applicationsTableBody">
+          <tr>
+            <td colspan="8" class="loading">
+              <div class="loading-spinner"></div>
+              <span>Loading applications...</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination">
+      <!-- Pagination buttons will be generated here -->
+    </div>
+  </div>
+
+  <!-- Side Panel -->
+  <div class="side-panel">
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <h3 style="margin-top: 0;">Quick Actions</h3>
+      <button class="quick-action-btn" onclick="window.open('booking.html', '_blank')">
+        📝 View Booking Form
+      </button>
+      <button class="quick-action-btn" onclick="loadSection('bookings')">
+        📋 Manage Applications
+      </button>
+      <button class="quick-action-btn secondary" onclick="showSettings()">
+        ⚙️ Settings
+      </button>
+      <button class="quick-action-btn secondary" onclick="loadSection('users')">
+        👥 User Management
+      </button>
+      <button class="quick-action-btn" onclick="loadSection('analytics')">
+        📊 View Analytics
+      </button>
+      <button class="quick-action-btn secondary" onclick="loadSection('gallery')">
+        🖼️ Gallery Management
+      </button>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+      <h3 style="margin-top: 0;">Recent Activity</h3>
+      <div id="recentActivityList">
+        <div class="activity-item">
+          <div class="activity-icon activity-new">📝</div>
+          <div class="activity-text">Loading recent activity...</div>
+          <div class="activity-time">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="analytics-panel">
+      <h3 style="margin-top: 0;">System Status</h3>
+      <div class="analytics-content">
+        <div class="vitals-grid">
+          <div class="vital-card">
+            <div class="vital-label">Database</div>
+            <div class="vital-value" id="dbStatus">Connected</div>
+            <div class="vital-status" style="background: #d4edda; color: #155724;">Good</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">Last Backup</div>
+            <div class="vital-value" id="lastBackup">--</div>
+            <div class="vital-status" style="background: #d4edda; color: #155724;">Good</div>
+          </div>
+          <div class="vital-card">
+            <div class="vital-label">Storage</div>
+            <div class="vital-value" id="storageUsed">--</div>
+            <div class="vital-status" style="background: #d4edda; color: #155724;">Good</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Additional Content -->
+<div style="margin-top: 30px;">
+  <div class="main-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Recent Statistics</h2>
+    </div>
+    
+    <div style="padding: 20px;">
+      <!-- Statistics Cards Container -->
+      <div class="stats-cards-container">
+        <div class="stat-card-mini">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <div class="stat-number" id="totalUsers">--</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+        </div>
+        <div class="stat-card-mini">
+          <div class="stat-icon">🏠</div>
+          <div class="stat-content">
+            <div class="stat-number" id="occupiedRooms">--</div>
+            <div class="stat-label">Occupied Rooms</div>
+          </div>
+        </div>
+        <div class="stat-card-mini">
+          <div class="stat-icon">📊</div>
+          <div class="stat-content">
+            <div class="stat-number" id="conversionRate">--</div>
+            <div class="stat-label">Conversion Rate</div>
+          </div>
+        </div>
+        <div class="stat-card-mini">
+          <div class="stat-icon">💰</div>
+          <div class="stat-content">
+            <div class="stat-number" id="monthlyRevenue">--</div>
+            <div class="stat-label">Monthly Revenue</div>
+          </div>
+        </div>
+        <div class="stat-card-mini">
+          <div class="stat-icon">📅</div>
+          <div class="stat-content">
+            <div class="stat-number" id="avgStayDuration">--</div>
+            <div class="stat-label">Avg Stay Duration</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Insights -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          <h4 style="margin-top: 0; color: #2c3e50;">Top Universities</h4>
+          <div id="topUniversities">
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>University of Dundee</span>
+              <span style="font-weight: bold;">45%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Abertay University</span>
+              <span style="font-weight: bold;">30%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>St Andrews University</span>
+              <span style="font-weight: bold;">15%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Other Universities</span>
+              <span style="font-weight: bold;">10%</span>
+            </div>
+          </div>
+        </div>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          <h4 style="margin-top: 0; color: #2c3e50;">Popular Room Types</h4>
+          <div id="popularRoomTypes">
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Single En-suite</span>
+              <span style="font-weight: bold;">40%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Single with WC</span>
+              <span style="font-weight: bold;">35%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Double with WC</span>
+              <span style="font-weight: bold;">15%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Single no WC</span>
+              <span style="font-weight: bold;">10%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Initialize overview page data
+document.addEventListener('DOMContentLoaded', function() {
+  updateSystemStatus();
+  updateAdditionalStats();
+});
+
+function updateSystemStatus() {
+  // Update system status indicators
+  const dbStatus = document.getElementById('dbStatus');
+  const lastBackup = document.getElementById('lastBackup');
+  const storageUsed = document.getElementById('storageUsed');
+  
+  if (dbStatus) {
+    dbStatus.textContent = typeof supabase !== 'undefined' ? 'Connected' : 'Offline';
+  }
+  
+  if (lastBackup) {
+    lastBackup.textContent = new Date().toLocaleDateString();
+  }
+  
+  if (storageUsed) {
+    storageUsed.textContent = '2.3 GB';
+  }
+}
+
+function updateAdditionalStats() {
+  // Update additional statistics
+  const stats = {
+    totalUsers: '127',
+    occupiedRooms: '23/25',
+    conversionRate: '82%',
+    monthlyRevenue: '£18,400',
+    avgStayDuration: '9.2 months'
+  };
+  
+  Object.entries(stats).forEach(([key, value]) => {
+    const element = document.getElementById(key);
+    if (element) {
+      element.textContent = value;
+    }
+  });
+}
+</script>

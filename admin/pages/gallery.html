@@ -1,0 +1,267 @@
+<!-- Document Management Section -->
+<div class="main-panel">
+  <!-- Panel Header -->
+  <div class="panel-header">
+    <h2 class="panel-title">📄 Document Management</h2>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="showDocumentStats()">
+        📊 Statistics
+      </button>
+      <button class="btn btn-secondary" onclick="showBulkDocumentActions()">
+        📋 Bulk Actions
+      </button>
+      <button class="btn btn-primary" onclick="refreshDocuments()">
+        🔄 Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Document Statistics Cards -->
+  <div id="documentStatsCards" class="stats-cards-container" style="display: none;">
+    <div class="stat-card-mini">
+      <div class="stat-icon">📄</div>
+      <div class="stat-content">
+        <div class="stat-number" id="totalDocumentsCount">0</div>
+        <div class="stat-label">Total Documents</div>
+      </div>
+    </div>
+    <div class="stat-card-mini">
+      <div class="stat-icon">🌐</div>
+      <div class="stat-content">
+        <div class="stat-number" id="sharedDocumentsCount">0</div>
+        <div class="stat-label">Shared Documents</div>
+      </div>
+    </div>
+    <div class="stat-card-mini">
+      <div class="stat-icon">👤</div>
+      <div class="stat-content">
+        <div class="stat-number" id="personalDocumentsCount">0</div>
+        <div class="stat-label">Personal Documents</div>
+      </div>
+    </div>
+    <div class="stat-card-mini">
+      <div class="stat-icon">💾</div>
+      <div class="stat-content">
+        <div class="stat-number" id="totalStorageUsed">0 MB</div>
+        <div class="stat-label">Storage Used</div>
+      </div>
+    </div>
+    <div class="stat-card-mini">
+      <div class="stat-icon">🏠</div>
+      <div class="stat-content">
+        <div class="stat-number" id="roomsWithDocuments">0</div>
+        <div class="stat-label">Rooms with Documents</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document Upload Form -->
+  <div class="document-upload-section">
+    <div class="section-header-with-toggle">
+      <h3>📤 Upload New Document</h3>
+      <button class="toggle-btn" onclick="toggleUploadForm()">
+        <span id="uploadToggleIcon">▼</span>
+      </button>
+    </div>
+    <div id="uploadFormContainer" class="upload-form-container">
+      <form id="documentUploadForm" class="document-upload-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="documentTitle">📝 Document Title *</label>
+            <input type="text" id="documentTitle" name="title" required 
+                   placeholder="Enter descriptive document title">
+          </div>
+          <div class="form-group">
+            <label for="documentFile">📁 Select File *</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="documentFile" name="file" required 
+                     accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.xls,.xlsx,.ppt,.pptx,.zip,.rar"
+                     onchange="handleFileSelect(this)">
+              <div class="file-input-display">
+                <span id="fileNameDisplay">No file selected</span>
+                <span id="fileSizeDisplay"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="documentDescription">📋 Description (Optional)</label>
+            <textarea id="documentDescription" name="description" 
+                      placeholder="Add a brief description of this document" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="documentCategory">🏷️ Category</label>
+            <select id="documentCategory" name="category">
+              <option value="">Select Category</option>
+              <option value="contracts">📄 Contracts & Agreements</option>
+              <option value="policies">📋 Policies & Rules</option>
+              <option value="forms">📝 Forms & Applications</option>
+              <option value="notices">📢 Notices & Announcements</option>
+              <option value="receipts">🧾 Receipts & Invoices</option>
+              <option value="maintenance">🔧 Maintenance & Repairs</option>
+              <option value="other">📂 Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <div class="document-type-selection">
+              <label class="radio-label">
+                <input type="radio" name="documentType" value="shared" id="sharedDocumentRadio" checked>
+                <span class="radio-custom"></span>
+                <span class="radio-text">🌐 Shared Document (visible to all students)</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="documentType" value="personal" id="personalDocumentRadio">
+                <span class="radio-custom"></span>
+                <span class="radio-text">👤 Personal Document (specific student only)</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group" id="roomNumberGroup" style="display: none;">
+            <label for="roomNumber">🏠 Room Number *</label>
+            <select id="roomNumber" name="roomNumber" required>
+              <option value="">Select Room Number</option>
+              <!-- Room options will be populated by JavaScript -->
+            </select>
+            <small class="form-help">Required for personal documents</small>
+          </div>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn btn-primary" id="uploadDocumentBtn">
+            <span class="btn-icon">📤</span>
+            <span class="btn-text">Upload Document</span>
+            <span class="btn-loading" style="display: none;">
+              <span class="loading-spinner-small"></span>
+              Uploading...
+            </span>
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="clearUploadForm()">
+            🗑️ Clear Form
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Documents List -->
+  <div class="documents-list-section">
+    <div class="section-header-with-actions">
+      <h3>📂 Document Library</h3>
+      <div class="view-options">
+        <button class="view-btn active" onclick="setDocumentView('table')" data-view="table">
+          📋 Table
+        </button>
+        <button class="view-btn" onclick="setDocumentView('grid')" data-view="grid">
+          🔲 Grid
+        </button>
+      </div>
+    </div>
+    
+    <!-- Enhanced Search and Filter Bar -->
+    <div class="search-filter-bar enhanced">
+      <div class="search-group">
+        <div class="search-input-wrapper">
+          <input type="text" class="search-box" placeholder="Search documents by title, room, or description..." 
+                 id="documentSearchInput" onkeyup="filterDocuments()">
+          <button class="search-clear-btn" onclick="clearDocumentSearch()" style="display: none;">✕</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <select class="filter-select" id="documentTypeFilter" onchange="filterDocuments()">
+          <option value="">📄 All Types</option>
+          <option value="shared">🌐 Shared Documents</option>
+          <option value="personal">👤 Personal Documents</option>
+        </select>
+        <select class="filter-select" id="documentCategoryFilter" onchange="filterDocuments()">
+          <option value="">🏷️ All Categories</option>
+          <option value="contracts">📄 Contracts</option>
+          <option value="policies">📋 Policies</option>
+          <option value="forms">📝 Forms</option>
+          <option value="notices">📢 Notices</option>
+          <option value="receipts">🧾 Receipts</option>
+          <option value="maintenance">🔧 Maintenance</option>
+          <option value="other">📂 Other</option>
+        </select>
+        <select class="filter-select" id="documentRoomFilter" onchange="filterDocuments()">
+          <option value="">🏠 All Rooms</option>
+          <!-- Room filter options will be populated by JavaScript -->
+        </select>
+        <select class="filter-select" id="documentSortFilter" onchange="filterDocuments()">
+          <option value="newest">📅 Newest First</option>
+          <option value="oldest">📅 Oldest First</option>
+          <option value="title">🔤 Title A-Z</option>
+          <option value="size">💾 File Size</option>
+        </select>
+      </div>
+      <div class="action-group">
+        <button class="btn btn-outline" onclick="exportDocumentsList()">
+          📊 Export List
+        </button>
+        <button class="btn btn-outline" onclick="toggleDocumentSelection()">
+          ☑️ Select All
+        </button>
+      </div>
+    </div>
+    
+    <!-- Document View Container -->
+    <div id="documentViewContainer">
+      <!-- Table View -->
+      <div id="documentTableView" class="documents-table-container">
+        <table class="applications-table enhanced-table">
+          <thead>
+            <tr>
+              <th width="30">
+                <input type="checkbox" id="selectAllDocuments" onchange="toggleAllDocumentSelection()">
+              </th>
+              <th width="40">📄</th>
+              <th>Title & Description</th>
+              <th>Type & Category</th>
+              <th>Room</th>
+              <th>File Info</th>
+              <th>Upload Date</th>
+              <th width="120">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="documentsTableBody">
+            <tr>
+              <td colspan="8" class="loading">
+                <div class="loading-spinner"></div>
+                <span>Loading documents...</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Grid View -->
+      <div id="documentGridView" class="documents-grid-container" style="display: none;">
+        <div id="documentsGridBody" class="documents-grid">
+          <!-- Grid items will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Bulk Actions Bar -->
+    <div id="bulkActionsBar" class="bulk-actions-bar" style="display: none;">
+      <div class="bulk-actions-content">
+        <span id="selectedDocumentsCount">0 documents selected</span>
+        <div class="bulk-actions-buttons">
+          <button class="btn btn-secondary" onclick="downloadSelectedDocuments()">
+            📥 Download Selected
+          </button>
+          <button class="btn btn-info" onclick="moveSelectedDocuments()">
+            📁 Move/Copy
+          </button>
+          <button class="btn btn-danger" onclick="deleteSelectedDocuments()">
+            🗑️ Delete Selected
+          </button>
+          <button class="btn btn-outline" onclick="clearDocumentSelection()">
+            ✕ Clear Selection
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

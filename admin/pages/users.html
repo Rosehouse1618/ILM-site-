@@ -1,0 +1,471 @@
+<!-- Users Management Section -->
+<div class="panel-header">
+  <h2 class="panel-title">👥 User Management</h2>
+  <button class="btn btn-primary" onclick="refreshUsers()">
+    🔄 Refresh
+  </button>
+</div>
+
+<!-- Student Registration Form -->
+<div class="document-upload-section">
+  <div class="section-header-with-toggle">
+    <h3>👤 Register New Student</h3>
+    <button class="toggle-btn" onclick="toggleRegistrationForm()">
+      <span id="registrationToggleIcon">▼</span>
+    </button>
+  </div>
+  <div id="registrationFormContainer" class="upload-form-container">
+    <form id="studentRegistrationForm" class="document-upload-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="studentName">📝 Full Name *</label>
+          <input type="text" id="studentName" name="name" required 
+                 placeholder="Enter student's full name">
+        </div>
+        <div class="form-group">
+          <label for="studentEmail">📧 Student Email *</label>
+          <input type="email" id="studentEmail" name="email" required 
+                 placeholder="Enter student's email address">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="studentRoom">🏠 Room Number</label>
+          <select id="studentRoom" name="roomNumber">
+            <option value="">Select Room Number</option>
+            <option value="1">Room 1</option>
+            <option value="2">Room 2</option>
+            <option value="3">Room 3</option>
+            <option value="4">Room 4</option>
+            <option value="5">Room 5</option>
+            <option value="6">Room 6</option>
+            <option value="7">Room 7</option>
+            <option value="8">Room 8</option>
+            <option value="9">Room 9</option>
+            <option value="10">Room 10</option>
+            <option value="11">Room 11</option>
+            <option value="12">Room 12</option>
+            <option value="13">Room 13</option>
+            <option value="14">Room 14</option>
+            <option value="15">Room 15</option>
+            <option value="16">Room 16</option>
+            <option value="17">Room 17</option>
+            <option value="18">Room 18</option>
+            <option value="19">Room 19</option>
+            <option value="20">Room 20</option>
+            <option value="21">Room 21</option>
+            <option value="22">Room 22</option>
+            <option value="23">Room 23</option>
+            <option value="24">Room 24</option>
+            <option value="25">Room 25</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="tempPassword">🔒 Temporary Password</label>
+          <input type="password" id="tempPassword" name="password"
+                 placeholder="Set temporary password (min 6 characters)">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="studentPhone">📞 Phone Number</label>
+          <input type="tel" id="studentPhone" name="phone" 
+                 placeholder="Enter student's phone number">
+        </div>
+        <div class="form-group">
+          <label for="studentStatus">📊 Status</label>
+          <select id="studentStatus" name="status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-submit">
+        <button type="submit" class="btn btn-primary" id="registerStudentBtn">
+          <span class="btn-icon">👤</span>
+          <span class="btn-text">Register Student</span>
+          <span class="btn-loading" style="display: none;">
+            <span class="loading-spinner-small"></span>
+            Registering...
+          </span>
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="generateRandomPassword()">
+          🎲 Generate Random Password
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="clearRegistrationForm()">
+          🗑️ Clear Form
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Students List -->
+<div class="documents-list-section">
+  <div class="section-header-with-actions">
+    <h3>👥 Registered Students</h3>
+    <div class="view-options">
+      <button class="view-btn active" onclick="setStudentView('table')" data-view="table">
+        📋 Table View
+      </button>
+      <button class="view-btn" onclick="setStudentView('grid')" data-view="grid">
+        🔲 Grid View
+      </button>
+    </div>
+  </div>
+  
+  <!-- Search and Filter Bar -->
+  <div class="search-filter-bar enhanced">
+    <div class="search-group">
+      <div class="search-input-wrapper">
+        <input type="text" class="search-box" placeholder="Search students by name, email, or room..." 
+               id="studentSearchInput" onkeyup="filterStudents()">
+        <button class="search-clear-btn" onclick="clearStudentSearch()" style="display: none;">✕</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <select class="filter-select" id="studentStatusFilter" onchange="filterStudents()">
+        <option value="">📊 All Status</option>
+        <option value="active">🟢 Active</option>
+        <option value="inactive">🔴 Inactive</option>
+        <option value="pending">🟡 Pending</option>
+      </select>
+      <select class="filter-select" id="studentRoomFilter" onchange="filterStudents()">
+        <option value="">🏠 All Rooms</option>
+        <!-- Room options will be populated dynamically -->
+      </select>
+      <select class="filter-select" id="studentSortFilter" onchange="filterStudents()">
+        <option value="newest">📅 Newest First</option>
+        <option value="oldest">📅 Oldest First</option>
+        <option value="name">🔤 Name A-Z</option>
+        <option value="room">🏠 Room Number</option>
+      </select>
+    </div>
+    <div class="action-group">
+      <button class="btn btn-outline" onclick="exportStudentsList()">
+        📊 Export List
+      </button>
+      <button class="btn btn-outline" onclick="toggleStudentSelection()">
+        ☑️ Select All
+      </button>
+    </div>
+  </div>
+  
+  <!-- Students Table Container -->
+  <div id="studentsTableContainer">
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading students...</p>
+    </div>
+  </div>
+
+  <!-- Bulk Actions Bar -->
+  <div id="studentBulkActionsBar" class="bulk-actions-bar" style="display: none;">
+    <div class="bulk-actions-content">
+      <span id="selectedStudentsCount">0 students selected</span>
+      <div class="bulk-actions-buttons">
+        <button class="btn btn-success" onclick="bulkActivateStudents()">
+          ✅ Activate Selected
+        </button>
+        <button class="btn btn-secondary" onclick="bulkDeactivateStudents()">
+          ⏸️ Deactivate Selected
+        </button>
+        <button class="btn btn-info" onclick="bulkSendEmails()">
+          📧 Send Email
+        </button>
+        <button class="btn btn-danger" onclick="bulkDeleteStudents()">
+          🗑️ Delete Selected
+        </button>
+        <button class="btn btn-outline" onclick="clearStudentSelection()">
+          ✕ Clear Selection
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- User Statistics -->
+<div style="margin-top: 30px;">
+  <div class="main-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">📊 User Statistics</h2>
+    </div>
+    
+    <div style="padding: 20px;">
+      <!-- User Stats Cards -->
+      <div class="stats-cards-container">
+        <div class="stat-card-mini">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <div class="stat-number" id="totalStudentsCount">0</div>
+            <div class="stat-label">Total Students</div>
+          </div>
+        </div>
+        <div class="stat-card-mini">
+          <div class="stat-icon">🟢</div>
+          <div class="stat-content">
+            <div class="stat-number" id="activeStudentsCount">0</div>
+            <div class="stat-label">Active Students</div>
+          </div>
+        </div>
+        <div class="stat-card-mini">
+          <div class="stat-icon">🏠</div>
+          <div class="stat-content">
+            <div class="stat-number" id="studentsWithRoomsCount">0</div>
+            <div class="stat-label">Students with Rooms</div>
+          </div>
+        </div>
+        <div class="stat-card-mini">
+          <div class="stat-icon">📅</div>
+          <div class="stat-content">
+            <div class="stat-number" id="newStudentsThisMonth">0</div>
+            <div class="stat-label">New This Month</div>
+          </div>
+        </div>
+        <div class="stat-card-mini">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-content">
+            <div class="stat-number" id="pendingStudentsCount">0</div>
+            <div class="stat-label">Pending Approval</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Room Occupancy Chart -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          <h4 style="margin-top: 0; color: #2c3e50;">Room Occupancy</h4>
+          <div id="roomOccupancy">
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Occupied Rooms</span>
+              <span style="font-weight: bold; color: #27ae60;">18/25</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Available Rooms</span>
+              <span style="font-weight: bold; color: #3498db;">7/25</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Occupancy Rate</span>
+              <span style="font-weight: bold; color: #f39c12;">72%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Maintenance</span>
+              <span style="font-weight: bold; color: #e74c3c;">0/25</span>
+            </div>
+          </div>
+        </div>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+          <h4 style="margin-top: 0; color: #2c3e50;">Recent Activity</h4>
+          <div id="recentUserActivity">
+            <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee;">
+              <span>New Registration</span>
+              <span style="font-size: 12px; color: #666;">2h ago</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee;">
+              <span>Room Assignment</span>
+              <span style="font-size: 12px; color: #666;">4h ago</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee;">
+              <span>Status Update</span>
+              <span style="font-size: 12px; color: #666;">6h ago</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+              <span>Account Activation</span>
+              <span style="font-size: 12px; color: #666;">1d ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Students management functionality
+let currentStudents = [];
+let selectedStudents = new Set();
+
+function toggleRegistrationForm() {
+  const container = document.getElementById('registrationFormContainer');
+  const icon = document.getElementById('registrationToggleIcon');
+  const isVisible = container.style.display !== 'none';
+  
+  container.style.display = isVisible ? 'none' : 'block';
+  icon.textContent = isVisible ? '▶' : '▼';
+}
+
+function generateRandomPassword() {
+  const length = 8;
+  const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    password += charset.charAt(Math.floor(Math.random() * charset.length));
+  }
+  
+  document.getElementById('tempPassword').value = password;
+  showNotification('Random password generated!', 'success');
+}
+
+function clearRegistrationForm() {
+  document.getElementById('studentRegistrationForm').reset();
+  showNotification('Form cleared', 'info');
+}
+
+function refreshUsers() {
+  showNotification('Refreshing user data...', 'info');
+  loadStudents();
+}
+
+function filterStudents() {
+  // Placeholder for student filtering
+  console.log('Filtering students...');
+}
+
+function clearStudentSearch() {
+  document.getElementById('studentSearchInput').value = '';
+  filterStudents();
+}
+
+function setStudentView(view) {
+  const buttons = document.querySelectorAll('.view-btn');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  
+  const activeButton = document.querySelector(`[data-view="${view}"]`);
+  if (activeButton) {
+    activeButton.classList.add('active');
+  }
+  
+  console.log(`Student view changed to: ${view}`);
+}
+
+function exportStudentsList() {
+  showNotification('Exporting students list...', 'info');
+  // Placeholder for export functionality
+}
+
+function toggleStudentSelection() {
+  console.log('Toggling student selection');
+  // Placeholder for selection toggle
+}
+
+function clearStudentSelection() {
+  selectedStudents.clear();
+  updateStudentSelection();
+}
+
+function updateStudentSelection() {
+  const count = selectedStudents.size;
+  const bulkBar = document.getElementById('studentBulkActionsBar');
+  const countElement = document.getElementById('selectedStudentsCount');
+  
+  if (count > 0) {
+    bulkBar.style.display = 'flex';
+    countElement.textContent = `${count} student${count !== 1 ? 's' : ''} selected`;
+  } else {
+    bulkBar.style.display = 'none';
+  }
+}
+
+// Bulk action functions
+function bulkActivateStudents() {
+  if (selectedStudents.size === 0) {
+    showNotification('No students selected', 'error');
+    return;
+  }
+  showNotification(`Activated ${selectedStudents.size} students`, 'success');
+  clearStudentSelection();
+}
+
+function bulkDeactivateStudents() {
+  if (selectedStudents.size === 0) {
+    showNotification('No students selected', 'error');
+    return;
+  }
+  showNotification(`Deactivated ${selectedStudents.size} students`, 'info');
+  clearStudentSelection();
+}
+
+function bulkSendEmails() {
+  if (selectedStudents.size === 0) {
+    showNotification('No students selected', 'error');
+    return;
+  }
+  showNotification(`Sending emails to ${selectedStudents.size} students`, 'info');
+  clearStudentSelection();
+}
+
+function bulkDeleteStudents() {
+  if (selectedStudents.size === 0) {
+    showNotification('No students selected', 'error');
+    return;
+  }
+  
+  if (confirm(`Are you sure you want to delete ${selectedStudents.size} students? This action cannot be undone.`)) {
+    showNotification(`Deleted ${selectedStudents.size} students`, 'info');
+    clearStudentSelection();
+  }
+}
+
+// Student registration form submission
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('studentRegistrationForm');
+  if (form) {
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      const studentData = Object.fromEntries(formData.entries());
+      
+      const submitButton = document.getElementById('registerStudentBtn');
+      const originalText = submitButton.textContent;
+      
+      // Show loading state
+      submitButton.querySelector('.btn-text').style.display = 'none';
+      submitButton.querySelector('.btn-loading').style.display = 'flex';
+      submitButton.disabled = true;
+      
+      try {
+        console.log('Registering student:', studentData);
+        
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        showNotification('Student registered successfully!', 'success');
+        form.reset();
+        
+      } catch (error) {
+        console.error('Registration error:', error);
+        showNotification('Failed to register student. Please try again.', 'error');
+      } finally {
+        // Reset button state
+        submitButton.querySelector('.btn-text').style.display = 'inline';
+        submitButton.querySelector('.btn-loading').style.display = 'none';
+        submitButton.disabled = false;
+      }
+    });
+  }
+  
+  // Update statistics
+  updateStudentStats();
+});
+
+function updateStudentStats() {
+  // Update student statistics
+  const stats = {
+    totalStudentsCount: '127',
+    activeStudentsCount: '118',
+    studentsWithRoomsCount: '95',
+    newStudentsThisMonth: '12',
+    pendingStudentsCount: '9'
+  };
+  
+  Object.entries(stats).forEach(([key, value]) => {
+    const element = document.getElementById(key);
+    if (element) {
+      element.textContent = value;
+    }
+  });
+}
+</script>
