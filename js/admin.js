@@ -87,3 +87,9 @@ async function loadSection(section) {
     main.innerHTML = `<div style="padding:40px;text-align:center;color:#c00;">Failed to load section: ${section}<br><small>${err.message}</small></div>`;
   }
 }
+
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  if (!sidebar) return;
+  sidebar.classList.toggle('open');
+}
