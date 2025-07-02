@@ -1,0 +1,2 @@
+/* styles.css (proxy) – imports legacy stylesheet to preserve existing styling */
+@import url('../styles.css');

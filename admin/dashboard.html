@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard – iLm Student Halls</title>
+  
+  <!-- Base & Admin styles -->
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Dashboard</h2>
+      <button data-section="overview" class="active" onclick="loadSection('overview')">🏠 Overview</button>
+      <button data-section="users" onclick="loadSection('users')">👥 Users</button>
+      <button data-section="bookings" onclick="loadSection('bookings')">📄 Bookings</button>
+      <button data-section="gallery" onclick="loadSection('gallery')">🖼️ Gallery</button>
+      <button data-section="analytics" onclick="loadSection('analytics')">📊 Analytics</button>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main">
+      <!-- Content for each section is injected here by admin.js -->
+    </main>
+  </div>
+  
+  <!-- Admin logic -->
+  <script src="../js/admin.js" defer></script>
+</body>
+</html>

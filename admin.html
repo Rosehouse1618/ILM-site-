@@ -405,7 +405,7 @@
           console.log('✅ User already authenticated:', user.email);
           showSuccess('Already signed in. Redirecting...');
           setTimeout(() => {
-            window.location.href = 'admin-dashboard.html';
+            window.location.href = 'admin/dashboard.html';
           }, 1500);
         }
       } catch (error) {
@@ -652,7 +652,7 @@
           localStorage.setItem('admin_email', data.user.email);
           
           setTimeout(() => {
-            window.location.href = 'admin-dashboard.html';
+            window.location.href = 'admin/dashboard.html';
           }, 1500);
         }
         
@@ -734,7 +734,7 @@
             localStorage.setItem('admin_email', data.user.email);
             
             setTimeout(() => {
-              window.location.href = 'admin-dashboard.html';
+              window.location.href = 'admin/dashboard.html';
             }, 2000);
           } else {
             // Email confirmation required

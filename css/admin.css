@@ -1,0 +1,56 @@
+/* admin.css - Admin Dashboard specific styles */
+
+/* Wrapper to scope admin styles */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f7fa;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: #2F2970;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+.sidebar h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 20px 24px;
+}
+.sidebar button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  text-align: left;
+  padding: 12px 24px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.sidebar button:hover,
+.sidebar button.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Main content */
+main#main {
+  flex: 1;
+  padding: 30px;
+  overflow: auto;
+}
+
+/* Utility */
+.hidden { display: none !important; }
+
+/* Responsive */
+@media(max-width: 768px) {
+  .sidebar { position: fixed; z-index: 1000; left: -260px; top: 0; height: 100%; transition: left 0.3s ease; }
+  .sidebar.open { left: 0; }
+  main#main { padding: 20px; }
+}
