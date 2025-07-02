@@ -1,2 +1,83 @@
 <h1>Bookings</h1>
 <p>Review and manage accommodation bookings here. (Feature coming soon)</p>
+
+<!-- BEGIN Applications Section Content -->
+<div id="applicationsSection" class="section-content">
+  <!-- Main Panel -->
+  <div class="main-panel">
+    <!-- Panel Header -->
+    <div class="panel-header">
+      <h2 class="panel-title">Applications</h2>
+      <button class="btn btn-primary" onclick="refreshApplications()">
+        🔄 Refresh
+      </button>
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="search-filter-bar">
+      <input type="text" class="search-box" placeholder="Search by name, email, or application ID..." 
+             id="searchInput" onkeyup="filterApplications()">
+      <select class="filter-select" id="statusFilter" onchange="filterApplications()">
+        <option value="">All Statuses</option>
+        <option value="new">New</option>
+        <option value="review">Under Review</option>
+        <option value="approved">Approved</option>
+        <option value="rejected">Rejected</option>
+        <option value="archived">Archived</option>
+      </select>
+      <select class="filter-select" id="universityFilter" onchange="filterApplications()">
+        <option value="">All Universities</option>
+        <option value="abertay">Abertay University</option>
+        <option value="dundee">University of Dundee</option>
+        <option value="al-makhtoum">Al Makhtoum Institute</option>
+        <option value="st-andrews">St Andrews University</option>
+        <option value="dundee-angus-college">Dundee & Angus College</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <!-- Bulk Actions Bar -->
+    <div class="bulk-actions-bar" id="bulkActionsBar">
+      <span id="selectedCount">0 selected</span>
+      <button class="btn btn-success" onclick="bulkApprove()">✅ Approve Selected</button>
+      <button class="btn btn-danger" onclick="bulkReject()">❌ Reject Selected</button>
+      <button class="btn btn-secondary" onclick="bulkArchive()">📦 Archive Selected</button>
+      <button class="btn btn-danger" onclick="bulkDelete()">🗑️ Delete Selected</button>
+      <button class="btn btn-info" onclick="bulkExport()">📊 Export Selected</button>
+    </div>
+
+    <!-- Applications Table -->
+    <div style="overflow-x: auto;">
+      <table class="applications-table">
+        <thead>
+          <tr>
+            <th class="checkbox-column">
+              <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+            </th>
+            <th>Application ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>University</th>
+            <th>Room Type</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="applicationsTableBody">
+          <tr>
+            <td colspan="9" class="loading">
+              Loading applications...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination">
+      <!-- Pagination buttons will be generated here -->
+    </div>
+  </div>
+</div>
+<!-- END Applications Section Content -->
