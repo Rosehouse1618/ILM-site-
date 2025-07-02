@@ -1,0 +1,219 @@
+<!-- Gallery Management Section -->
+<div class="admin-header">
+  <div>
+    <h1 class="admin-title">Gallery Management</h1>
+    <p style="margin: 5px 0 0 0; opacity: 0.9;">Manage photo gallery images and categories</p>
+  </div>
+  <div class="admin-stats">
+    <div class="stat-card">
+      <span class="stat-number" id="totalGalleryImages">0</span>
+      <span class="stat-label">Total Images</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="visibleGalleryImages">0</span>
+      <span class="stat-label">Visible Images</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="featuredGalleryImages">0</span>
+      <span class="stat-label">Featured Images</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="totalGalleryCategories">0</span>
+      <span class="stat-label">Categories</span>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <!-- Main Gallery Panel -->
+  <div class="main-panel">
+    <!-- Panel Header -->
+    <div class="panel-header">
+      <h2 class="panel-title">Gallery Images</h2>
+      <div class="gallery-header-actions">
+        <button class="btn btn-primary" onclick="openAddImageModal()">+ Add Image</button>
+        <button class="btn btn-secondary" onclick="refreshGallery()">🔄 Refresh</button>
+        <button class="btn btn-info" onclick="openDebugModal()">🔍 Debug</button>
+      </div>
+    </div>
+
+    <!-- Gallery Filter Bar -->
+    <div class="search-filter-bar">
+      <input type="text" class="search-box" placeholder="Search by title, alt text, or URL..." 
+             id="gallerySearchInput" onkeyup="filterGalleryImages()">
+      <select class="filter-select" id="galleryStatusFilter" onchange="filterGalleryImages()">
+        <option value="">All Statuses</option>
+        <option value="visible">Visible</option>
+        <option value="hidden">Hidden</option>
+        <option value="featured">Featured</option>
+      </select>
+      <select class="filter-select" id="galleryCategoryFilter" onchange="filterGalleryImages()">
+        <option value="">All Categories</option>
+        <!-- Categories will be loaded dynamically -->
+      </select>
+      <button class="btn btn-info" onclick="openCategoryModal()">📁 Manage Categories</button>
+    </div>
+
+    <!-- Bulk Actions Bar -->
+    <div class="bulk-actions-bar" id="galleryBulkActionsBar" style="display: none;">
+      <span id="gallerySelectedCount">0 selected</span>
+      <button class="btn btn-success" onclick="bulkToggleVisibility()">👁️ Toggle Visibility</button>
+      <button class="btn btn-warning" onclick="bulkSetFeatured()">⭐ Set Featured</button>
+      <button class="btn btn-danger" onclick="bulkDeleteImages()">🗑️ Delete Selected</button>
+      <button class="btn btn-secondary" onclick="clearGallerySelection()">Clear Selection</button>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="gallery-management-container">
+      <div class="gallery-management-grid" id="galleryManagementGrid">
+        <div class="loading">Loading gallery images...</div>
+      </div>
+    </div>
+
+    <!-- Gallery Pagination -->
+    <div class="pagination" id="galleryPagination">
+      <!-- Pagination buttons will be added here -->
+    </div>
+  </div>
+
+  <!-- Gallery Side Panel -->
+  <div class="side-panel">
+    <!-- Quick Gallery Actions -->
+    <div class="quick-actions">
+      <h3 style="margin-top: 0;">Quick Actions</h3>
+      <button class="quick-action-btn" onclick="openAddImageModal()">
+        📷 Add New Image
+      </button>
+      <button class="quick-action-btn" onclick="openCategoryModal()">
+        📁 Manage Categories
+      </button>
+      <button class="quick-action-btn secondary" onclick="renumberGalleryImages()">
+        🔢 Renumber Images
+      </button>
+      <button class="quick-action-btn secondary" onclick="reorderGallery()">
+        🔄 Reorder Images
+      </button>
+      <button class="quick-action-btn secondary" onclick="exportGallery()">
+        📊 Export Gallery Data
+      </button>
+    </div>
+
+    <!-- Gallery Statistics -->
+    <div class="recent-activity">
+      <h3 style="margin-top: 0;">Gallery Statistics</h3>
+      <div id="galleryStatsContent">
+        <div class="activity-item">
+          <div class="activity-icon activity-info">📊</div>
+          <div class="activity-text">Images by Category</div>
+        </div>
+        <div id="categoryBreakdown" style="margin: 10px 0; font-size: 0.9em;">
+          <!-- Category breakdown will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Image Modal -->
+<div id="imageModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="imageModalTitle">Add New Image</h3>
+      <button class="close-modal" onclick="closeImageModal()">&times;</button>
+    </div>
+    <form id="imageForm" onsubmit="saveGalleryImage(event)">
+      <input type="hidden" id="imageId" name="imageId">
+      
+      <div class="form-group">
+        <label for="imageUrl">Image URL *</label>
+        <input type="url" id="imageUrl" name="imageUrl" required placeholder="https://res.cloudinary.com/...">
+        <small>Paste your Cloudinary URL here</small>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="imageTitle">Title</label>
+          <input type="text" id="imageTitle" name="imageTitle" placeholder="e.g., Modern Kitchen">
+        </div>
+        <div class="form-group">
+          <label for="imageCategory">Category *</label>
+          <select id="imageCategory" name="imageCategory" required>
+            <!-- Options will be loaded dynamically -->
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="imageAltText">Alt Text</label>
+        <input type="text" id="imageAltText" name="imageAltText" placeholder="Descriptive text for accessibility">
+        <small>Important for SEO and accessibility</small>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="displayOrder">Display Order</label>
+          <input type="number" id="displayOrder" name="displayOrder" min="0" placeholder="0">
+          <small>Lower numbers appear first</small>
+        </div>
+        <div class="form-group" style="display: flex; gap: 20px; align-items: center; margin-top: 25px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="isVisible" name="isVisible" checked>
+            Visible on website
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="isFeatured" name="isFeatured">
+            Featured image
+          </label>
+        </div>
+      </div>
+
+      <div class="image-preview" id="imagePreview" style="display: none; margin-top: 15px; text-align: center;">
+        <img id="previewImg" src="" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" onclick="closeImageModal()" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Image</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Category Management Modal -->
+<div id="categoryModal" class="modal">
+  <div class="modal-content" style="max-width: 800px;">
+    <div class="modal-header">
+      <h3>Manage Gallery Categories</h3>
+      <button class="close-modal" onclick="closeCategoryModal()">&times;</button>
+    </div>
+    <div id="categoryModalBody">
+      <!-- Add New Category -->
+      <div class="category-section">
+        <h4>Add New Category</h4>
+        <form id="categoryForm" onsubmit="saveCategory(event)" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; margin-bottom: 20px;">
+          <input type="hidden" id="categoryId" name="categoryId">
+          <div class="form-group" style="margin: 0;">
+            <label for="categoryName">Category Name (internal)</label>
+            <input type="text" id="categoryName" name="categoryName" required placeholder="e.g., bedrooms" style="width: 100%;">
+          </div>
+          <div class="form-group" style="margin: 0;">
+            <label for="categoryDisplayName">Display Name</label>
+            <input type="text" id="categoryDisplayName" name="categoryDisplayName" required placeholder="e.g., Bedrooms" style="width: 100%;">
+          </div>
+          <button type="submit" class="btn btn-primary" id="categorySaveBtn">Add Category</button>
+        </form>
+      </div>
+
+      <!-- Existing Categories -->
+      <div class="category-section">
+        <h4>Existing Categories</h4>
+        <div id="categoryList" style="max-height: 400px; overflow-y: auto;">
+          <!-- Categories will be loaded here -->
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeCategoryModal()">Close</button>
+    </div>
+  </div>
+</div>

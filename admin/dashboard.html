@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  
+  <title>Admin Dashboard - iLm Halal Student Halls</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png">
+  
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <!-- jsPDF for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <a href="/admin/dashboard.html" class="sidebar-logo">
+          <img src="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png" alt="iLm Logo">
+          <span>iLm Admin</span>
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <button data-section="overview" class="active">
+          <span>🏠</span>
+          <span>Overview</span>
+        </button>
+        
+        <button data-section="bookings">
+          <span>📋</span>
+          <span>Bookings</span>
+        </button>
+        
+        <button data-section="users">
+          <span>👥</span>
+          <span>Users</span>
+        </button>
+        
+        <button data-section="gallery">
+          <span>🖼️</span>
+          <span>Gallery</span>
+        </button>
+        
+        <button data-section="analytics">
+          <span>📊</span>
+          <span>Analytics</span>
+        </button>
+        
+        <div class="sidebar-divider"></div>
+        
+        <button data-section="documents">
+          <span>📄</span>
+          <span>Documents</span>
+        </button>
+        
+        <button data-section="settings">
+          <span>⚙️</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="btn btn-secondary" style="width: 100%;">
+          <span>🚪</span>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="admin-main" id="adminMain">
+      <!-- Mobile Toggle -->
+      <button class="mobile-toggle" id="mobileToggle">☰</button>
+      
+      <!-- Dynamic content will be loaded here -->
+      <div id="main">
+        <div class="loading">Loading dashboard...</div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Notification Container -->
+  <div id="notification" class="notification"></div>
+  
+  <!-- JavaScript -->
+  <script src="../js/admin.js" defer></script>
+</body>
+</html>

@@ -9,7 +9,7 @@
   <meta name="robots" content="noindex, nofollow">
   
   <title>Admin Login - iLm Halal Student Halls</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dq8l3fhb2/image/upload/v1748189942/web-app-manifest-192x192_wr5wdr.png">
   
   <!-- Supabase CDN -->
@@ -405,7 +405,7 @@
           console.log('✅ User already authenticated:', user.email);
           showSuccess('Already signed in. Redirecting...');
           setTimeout(() => {
-            window.location.href = 'admin-dashboard.html';
+            window.location.href = '/admin/dashboard.html';
           }, 1500);
         }
       } catch (error) {
@@ -652,7 +652,7 @@
           localStorage.setItem('admin_email', data.user.email);
           
           setTimeout(() => {
-            window.location.href = 'admin-dashboard.html';
+            window.location.href = '/admin/dashboard.html';
           }, 1500);
         }
         
@@ -734,7 +734,7 @@
             localStorage.setItem('admin_email', data.user.email);
             
             setTimeout(() => {
-              window.location.href = 'admin-dashboard.html';
+              window.location.href = '/admin/dashboard.html';
             }, 2000);
           } else {
             // Email confirmation required

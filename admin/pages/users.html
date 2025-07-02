@@ -1,0 +1,111 @@
+<!-- Users/Students Section -->
+<div class="admin-header">
+  <div>
+    <h1 class="admin-title">Student Management</h1>
+    <p style="margin: 5px 0 0 0; opacity: 0.9;">Manage registered students and room assignments</p>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-primary" onclick="openAddStudentModal()">+ Add Student</button>
+    <button class="btn btn-secondary" onclick="refreshStudents()">🔄 Refresh</button>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <!-- Students Table -->
+  <div class="main-panel">
+    <!-- Search and Filter Bar -->
+    <div class="search-filter-bar">
+      <input type="text" class="search-box" placeholder="Search by name or email..." 
+             id="studentSearchInput" onkeyup="filterStudents()">
+      <select class="filter-select" id="roomFilter" onchange="filterStudents()">
+        <option value="">All Rooms</option>
+        <!-- Room options will be populated dynamically -->
+      </select>
+      <button class="btn btn-secondary" onclick="clearStudentFilters()">Clear Filters</button>
+      <span id="studentCountBadge" style="display: none;"></span>
+    </div>
+
+    <!-- Students Table -->
+    <div id="studentsTableContainer">
+      <div class="loading">Loading students...</div>
+    </div>
+  </div>
+
+  <!-- Side Panel -->
+  <div class="side-panel">
+    <!-- Student Registration Form -->
+    <div class="quick-actions">
+      <h3 style="margin-top: 0;">Register New Student</h3>
+      <form id="studentRegistrationForm" onsubmit="registerStudent(event)">
+        <div class="form-group">
+          <label for="studentName">Full Name *</label>
+          <input type="text" id="studentName" name="studentName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="studentEmail">Email Address *</label>
+          <input type="email" id="studentEmail" name="studentEmail" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="studentRoom">Room Number *</label>
+          <select id="studentRoom" name="studentRoom" required>
+            <option value="">Select Room Number</option>
+            <!-- Room options will be populated dynamically -->
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="tempPassword">Temporary Password *</label>
+          <div style="display: flex; gap: 10px;">
+            <input type="password" id="tempPassword" name="tempPassword" required minlength="6">
+            <button type="button" class="btn btn-secondary" onclick="generateRandomPassword()">Generate</button>
+          </div>
+          <small>Student will need to change this on first login</small>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" id="registerStudentBtn" style="width: 100%;">
+          Register Student
+        </button>
+      </form>
+    </div>
+
+    <!-- Room Statistics -->
+    <div class="recent-activity">
+      <h3 style="margin-top: 0;">Room Statistics</h3>
+      <div id="roomStatistics">
+        <div class="loading">Loading statistics...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Student Modal -->
+<div id="editStudentModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Edit Student Details</h3>
+      <button class="close-modal" onclick="closeEditStudentModal()">&times;</button>
+    </div>
+    <form id="editStudentForm" onsubmit="updateStudent(event)">
+      <input type="hidden" id="editStudentId">
+      
+      <div class="form-group">
+        <label for="editStudentName">Full Name</label>
+        <input type="text" id="editStudentName" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="editStudentRoom">Room Number</label>
+        <select id="editStudentRoom" required>
+          <!-- Room options will be populated dynamically -->
+        </select>
+      </div>
+      
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeEditStudentModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Update Student</button>
+      </div>
+    </form>
+  </div>
+</div>

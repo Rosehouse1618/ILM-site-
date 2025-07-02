@@ -1,0 +1,74 @@
+<!-- Bookings/Applications Section -->
+<div class="admin-header">
+  <div>
+    <h1 class="admin-title">Student Applications</h1>
+    <p style="margin: 5px 0 0 0; opacity: 0.9;">Manage and review student accommodation applications</p>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-primary" onclick="refreshApplications()">🔄 Refresh</button>
+    <button class="btn btn-success" onclick="exportApplications()">📥 Export</button>
+  </div>
+</div>
+
+<div class="main-panel">
+  <!-- Search and Filter Bar -->
+  <div class="search-filter-bar">
+    <input type="text" class="search-box" placeholder="Search by name, email, or application ID..." 
+           id="applicationSearchInput" onkeyup="filterApplications()">
+    <select class="filter-select" id="statusFilter" onchange="filterApplications()">
+      <option value="">All Statuses</option>
+      <option value="new">New</option>
+      <option value="review">Under Review</option>
+      <option value="approved">Approved</option>
+      <option value="rejected">Rejected</option>
+      <option value="archived">Archived</option>
+    </select>
+    <select class="filter-select" id="dateFilter" onchange="filterApplications()">
+      <option value="">All Dates</option>
+      <option value="today">Today</option>
+      <option value="week">This Week</option>
+      <option value="month">This Month</option>
+      <option value="custom">Custom Range</option>
+    </select>
+    <button class="btn btn-secondary" onclick="clearFilters()">Clear Filters</button>
+  </div>
+
+  <!-- Bulk Actions Bar -->
+  <div class="bulk-actions-bar" id="bulkActionsBar" style="display: none;">
+    <span id="selectedCount">0 selected</span>
+    <button class="btn btn-success" onclick="bulkApprove()">✅ Approve</button>
+    <button class="btn btn-danger" onclick="bulkReject()">❌ Reject</button>
+    <button class="btn btn-secondary" onclick="bulkArchive()">📦 Archive</button>
+    <button class="btn btn-info" onclick="bulkExport()">📊 Export</button>
+    <button class="btn btn-secondary" onclick="clearSelection()">Clear Selection</button>
+  </div>
+
+  <!-- Applications Table -->
+  <div id="applicationsTableContainer">
+    <div class="loading">Loading applications...</div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" id="applicationsPagination">
+    <!-- Pagination buttons will be added here -->
+  </div>
+</div>
+
+<!-- View Application Modal -->
+<div id="viewApplicationModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Application Details</h3>
+      <button class="close-modal" onclick="closeApplicationModal()">&times;</button>
+    </div>
+    <div id="applicationDetails">
+      <!-- Application details will be loaded here -->
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-success" onclick="approveApplication()">✅ Approve</button>
+      <button class="btn btn-danger" onclick="rejectApplication()">❌ Reject</button>
+      <button class="btn btn-info" onclick="exportApplicationPDF()">📄 Export PDF</button>
+      <button class="btn btn-secondary" onclick="closeApplicationModal()">Close</button>
+    </div>
+  </div>
+</div>

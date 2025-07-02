@@ -1,0 +1,101 @@
+<!-- Overview Section -->
+<div class="admin-header">
+  <div>
+    <h1 class="admin-title">Admin Dashboard</h1>
+    <p style="margin: 5px 0 0 0; opacity: 0.9;">Welcome back! Here's your overview.</p>
+  </div>
+  <div class="admin-stats">
+    <div class="stat-card">
+      <span class="stat-number" id="totalApplications">0</span>
+      <span class="stat-label">Total Applications</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="newApplications">0</span>
+      <span class="stat-label">New Applications</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="pendingReview">0</span>
+      <span class="stat-label">Pending Review</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number" id="approved">0</span>
+      <span class="stat-label">Approved</span>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <!-- Recent Applications -->
+  <div class="main-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Recent Applications</h2>
+      <button class="btn btn-primary" onclick="loadSection('bookings')">View All</button>
+    </div>
+    <div id="recentApplicationsContainer">
+      <div class="loading">Loading recent applications...</div>
+    </div>
+  </div>
+  
+  <!-- Quick Actions & Activity -->
+  <div class="side-panel">
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <h3 style="margin-top: 0;">Quick Actions</h3>
+      <button class="quick-action-btn" onclick="loadSection('bookings')">
+        📋 View Applications
+      </button>
+      <button class="quick-action-btn" onclick="openAddStudentModal()">
+        👤 Add New Student
+      </button>
+      <button class="quick-action-btn" onclick="loadSection('gallery')">
+        🖼️ Manage Gallery
+      </button>
+      <button class="quick-action-btn secondary" onclick="generateMonthlyReport()">
+        📊 Generate Report
+      </button>
+      <button class="quick-action-btn secondary" onclick="exportData()">
+        📥 Export Data
+      </button>
+    </div>
+    
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+      <h3 style="margin-top: 0;">Recent Activity</h3>
+      <div id="recentActivity">
+        <div class="loading">Loading activity...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Analytics Preview -->
+<div class="analytics-panel" style="margin-top: 30px;">
+  <div class="panel-header">
+    <h2 class="panel-title">Analytics Overview</h2>
+    <button class="btn btn-info" onclick="loadSection('analytics')">View Detailed Analytics</button>
+  </div>
+  <div class="analytics-content">
+    <div class="analytics-cards">
+      <div class="analytics-card">
+        <div class="card-icon">📈</div>
+        <div class="card-number" id="monthlyGrowth">+12%</div>
+        <div class="card-label">Monthly Growth</div>
+      </div>
+      <div class="analytics-card">
+        <div class="card-icon">👥</div>
+        <div class="card-number" id="activeStudents">0</div>
+        <div class="card-label">Active Students</div>
+      </div>
+      <div class="analytics-card">
+        <div class="card-icon">🏠</div>
+        <div class="card-number" id="occupancyRate">0%</div>
+        <div class="card-label">Occupancy Rate</div>
+      </div>
+      <div class="analytics-card">
+        <div class="card-icon">📊</div>
+        <div class="card-number" id="conversionRate">0%</div>
+        <div class="card-label">Conversion Rate</div>
+      </div>
+    </div>
+  </div>
+</div>
